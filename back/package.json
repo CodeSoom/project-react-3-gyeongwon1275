@@ -1,0 +1,19 @@
+{
+  "name": "animalphy-server",
+  "version": "1.0.0",
+  "description": "animalphy-nodejs-express-server",
+  "main": "server.js",
+  "repository": "https://github.com/CodeSoom/project-react-3-gyeongwon1275.git",
+  "author": "gyeongwon1275",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
