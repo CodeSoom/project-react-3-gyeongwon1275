@@ -7,6 +7,14 @@
   "author": "gyeongwon1275",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "test:unit": "jest",
+    "coverage": "npm run test:unit -- --coverage",
+    "lint": "eslint --ext js,jsx .",
+    "test-w": "jest --watchAll",
+    "build": "webpack --mode production"
+  },
   "dependencies": {
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
