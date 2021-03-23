@@ -13,7 +13,8 @@
     "coverage": "npm run test:unit -- --coverage",
     "lint": "eslint --ext js,jsx .",
     "test-w": "jest --watchAll",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "aws s3 sync ./dist s3://animalphy-gyeongwon"
   },
   "dependencies": {
     "@emotion/react": "^11.1.5",
