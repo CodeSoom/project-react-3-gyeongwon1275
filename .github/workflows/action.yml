@@ -30,10 +30,13 @@ jobs:
         restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
+
     - name: Install dependecies
+      working-directory: ./front
       run: yarn 
 
     - name: Build
+      working-directory: ./front
       run: yarn build
 
     - name: Deploy
