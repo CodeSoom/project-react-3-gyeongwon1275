@@ -45,6 +45,7 @@ function PostForm({
   onClose,
   onChangeImage,
   onChangeText,
+  onClick,
   imageFile,
   formVisible,
 }) {
@@ -63,7 +64,7 @@ function PostForm({
         <SubmitPostButton
           type="primary"
           htmlType="button"
-          onClick={onClose}
+          onClick={onClick}
         >
           올리기
         </SubmitPostButton>

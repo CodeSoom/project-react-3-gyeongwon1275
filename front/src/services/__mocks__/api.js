@@ -1,7 +1,5 @@
-export async function postImage() {
-  return '';
-}
+export const postImage = jest.fn();
 
-export async function sendPost() {
-  return '';
-}
+export const sendPost = jest.fn();
+
+export const getPosts = jest.fn();

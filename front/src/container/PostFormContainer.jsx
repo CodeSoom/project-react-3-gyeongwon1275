@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PostForm from '../components/PostForm';
 
-import { setFormVisible, setImageFile, setPostText } from '../data/postReducer';
+import {
+  setFormVisible, setImageFile, setPostText, writePost,
+} from '../data/postReducer';
 
 export default function PostFormContainer() {
   const dispatch = useDispatch();
@@ -29,11 +31,16 @@ export default function PostFormContainer() {
     dispatch(setPostText(text));
   };
 
+  const onClick = () => {
+    dispatch(writePost());
+    onClose();
+  };
   return (
     <PostForm
       onClose={onClose}
       onChangeImage={onChangeImage}
       onChangeText={onChangeText}
+      onClick={onClick}
       imageFile={imageFile}
       formVisible={formVisible}
     />
