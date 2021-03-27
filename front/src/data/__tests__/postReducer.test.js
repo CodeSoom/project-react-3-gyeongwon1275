@@ -1,4 +1,4 @@
-import postReducer, { setFormVisible } from '../postReducer';
+import postReducer, { setFormVisible, setImageFile } from '../postReducer';
 
 describe('postReducer', () => {
   describe('openPostForm', () => {
@@ -8,6 +8,19 @@ describe('postReducer', () => {
       const state = postReducer(initialState, setFormVisible(true));
 
       expect(state.formVisible).toBe(true);
+    });
+  });
+
+  describe('setImageFile', () => {
+    it('changes imageFile', () => {
+      const initialState = { imageFile: null };
+
+      const imageFile = new FormData();
+      imageFile.append('image', new Blob());
+
+      const state = postReducer(initialState, setImageFile(imageFile));
+
+      expect(state.imageFile).not.toBeNull();
     });
   });
 });
