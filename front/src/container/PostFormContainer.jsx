@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PostForm from '../components/PostForm';
 
-import { setFormVisible, setImageFile } from '../data/postReducer';
+import { setFormVisible, setImageFile, setPostText } from '../data/postReducer';
 
 export default function PostFormContainer() {
   const dispatch = useDispatch();
@@ -25,10 +25,15 @@ export default function PostFormContainer() {
     reader.readAsDataURL(file);
   };
 
+  const onChangeText = (text) => {
+    dispatch(setPostText(text));
+  };
+
   return (
     <PostForm
       onClose={onClose}
       onChangeImage={onChangeImage}
+      onChangeText={onChangeText}
       imageFile={imageFile}
       formVisible={formVisible}
     />

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   formVisible: false,
   imageFile: null,
+  text: '',
 };
 
 const { actions, reducer } = createSlice({
@@ -15,12 +16,16 @@ const { actions, reducer } = createSlice({
     setImageFile(state, { payload: imageFile }) {
       state.imageFile = imageFile;
     },
+    setPostText(state, { payload: text }) {
+      state.text = text;
+    },
   },
 });
 
 export const {
   setFormVisible,
   setImageFile,
+  setPostText,
 } = actions;
 
 export default reducer;

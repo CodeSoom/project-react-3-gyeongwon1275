@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import given from 'given2';
 
 import PostFormContainer from '../PostFormContainer';
+import { setPostText } from '../../data/postReducer';
 
 describe('PostFormContainer', () => {
   const dispatch = jest.fn();
@@ -18,6 +19,8 @@ describe('PostFormContainer', () => {
     readAsDataURL.mockClear();
 
     useDispatch.mockImplementation(() => dispatch);
+
+    given('formVisible', () => true);
     useSelector.mockImplementation((selector) => selector({
       post: {
         formVisible: given.formVisible,
@@ -47,8 +50,6 @@ describe('PostFormContainer', () => {
   });
 
   it('uploads image file', () => {
-    given('formVisible', () => true);
-
     render(<PostFormContainer />);
 
     const imageFileInput = screen.getByTestId('image-file-input');
@@ -58,5 +59,17 @@ describe('PostFormContainer', () => {
     fireEvent.change(imageFileInput, { target: { files: [imageFile] } });
 
     expect(readAsDataURL).toHaveBeenCalledWith(imageFile);
+  });
+
+  it('inputs post content text', () => {
+    render(<PostFormContainer />);
+
+    const textArea = screen.getByRole('textbox');
+
+    expect(textArea).toBeInTheDocument();
+
+    fireEvent.change(textArea, { target: { value: '강아지' } });
+
+    expect(dispatch).toHaveBeenCalledWith(setPostText('강아지'));
   });
 });

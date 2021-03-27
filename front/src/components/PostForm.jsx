@@ -44,6 +44,7 @@ const ImageUploadButton = styled.button({
 function PostForm({
   onClose,
   onChangeImage,
+  onChangeText,
   imageFile,
   formVisible,
 }) {
@@ -68,7 +69,12 @@ function PostForm({
         </SubmitPostButton>
       )}
     >
-      <Input.TextArea placeholder="xxx님 어떤 짤인가요?" />
+      <Input.TextArea
+        placeholder="xxx님 어떤 짤인가요?"
+        onChange={(event) => {
+          onChangeText(event.target.value);
+        }}
+      />
       <ImageWrapper src={imageFile} />
       <IconContainer>
         <ImageUploadButton type="button" onClick={openImageUpload}>
