@@ -41,24 +41,16 @@ const ImageUploadButton = styled.button({
   cursor: 'pointer',
 });
 
-function PostForm({ onClose, formVisible }) {
+function PostForm({
+  onClose,
+  onChangeImage,
+  imageFile,
+  formVisible,
+}) {
   const imageFileInput = useRef(null);
-  const imageWrapper = useRef(null);
 
   const openImageUpload = () => {
     imageFileInput.current.click();
-  };
-
-  const previewImage = (event) => {
-    const { files } = event.target;
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      imageWrapper.current.src = reader.result;
-    };
-
-    reader.readAsDataURL(files[0]);
   };
 
   return (
@@ -77,15 +69,19 @@ function PostForm({ onClose, formVisible }) {
       )}
     >
       <Input.TextArea placeholder="xxx님 어떤 짤인가요?" />
-      <ImageWrapper ref={imageWrapper} />
+      <ImageWrapper src={imageFile} />
       <IconContainer>
         <ImageUploadButton type="button" onClick={openImageUpload}>
           <ImageIcon />
           <HiddenImageFileInput
             ref={imageFileInput}
-            onChange={previewImage}
+            onChange={(event) => {
+              const { files } = event.target;
+              onChangeImage(files[0]);
+            }}
             type="file"
             accept="image/*"
+            data-testid="image-file-input"
           />
         </ImageUploadButton>
       </IconContainer>

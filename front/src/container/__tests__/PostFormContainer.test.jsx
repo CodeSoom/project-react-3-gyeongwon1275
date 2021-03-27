@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,11 +11,18 @@ import PostFormContainer from '../PostFormContainer';
 describe('PostFormContainer', () => {
   const dispatch = jest.fn();
 
+  const readAsDataURL = jest.spyOn(FileReader.prototype, 'readAsDataURL');
+
   beforeEach(() => {
     dispatch.mockClear();
+    readAsDataURL.mockClear();
+
     useDispatch.mockImplementation(() => dispatch);
     useSelector.mockImplementation((selector) => selector({
-      post: { formVisible: given.formVisible },
+      post: {
+        formVisible: given.formVisible,
+        imageFile: given.imageFile,
+      },
     }));
   });
 
@@ -37,5 +44,19 @@ describe('PostFormContainer', () => {
 
       expect(screen.queryByRole('heading', { name: '짤 올리기' })).toBeNull();
     });
+  });
+
+  it('uploads image file', () => {
+    given('formVisible', () => true);
+
+    render(<PostFormContainer />);
+
+    const imageFileInput = screen.getByTestId('image-file-input');
+
+    const imageFile = new Blob();
+
+    fireEvent.change(imageFileInput, { target: { files: [imageFile] } });
+
+    expect(readAsDataURL).toHaveBeenCalledWith(imageFile);
   });
 });
