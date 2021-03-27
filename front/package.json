@@ -17,6 +17,7 @@
     "deploy": "aws s3 sync ./dist s3://animalphy-gyeongwon"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "@reduxjs/toolkit": "^1.5.0",
