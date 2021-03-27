@@ -5,7 +5,10 @@ import { useDispatch } from 'react-redux';
 import { PlusCircleFilled } from '@ant-design/icons';
 
 import styled from '@emotion/styled';
+
 import { setFormVisible } from '../data/postReducer';
+
+import PostFormContainer from '../container/PostFormContainer';
 
 const PlusIcon = styled(PlusCircleFilled)({
   fontSize: '2rem', color: '#333', backgroundColor: '#fff', borderRadius: '1rem',
@@ -26,6 +29,7 @@ export default function Header() {
           <PlusIcon />
         </button>
       </div>
+      <PostFormContainer />
     </div>
   );
 }
