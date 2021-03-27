@@ -11,3 +11,8 @@ export const postImage = async (image) => {
 };
 
 export const sendPost = ({ text, url }) => http.post('/post', { text, url });
+
+export const getPosts = async () => {
+  const { data } = await http.get('/posts');
+  return data;
+};
