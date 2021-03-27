@@ -1,4 +1,5 @@
-import postReducer, { setFormVisible, setImageFile } from '../postReducer';
+import postReducer,
+{ setFormVisible, setImageFile, setPostText } from '../postReducer';
 
 describe('postReducer', () => {
   describe('openPostForm', () => {
@@ -21,6 +22,16 @@ describe('postReducer', () => {
       const state = postReducer(initialState, setImageFile(imageFile));
 
       expect(state.imageFile).not.toBeNull();
+    });
+  });
+
+  describe('setPostText', () => {
+    it('changes text', () => {
+      const initialState = { text: '' };
+
+      const state = postReducer(initialState, setPostText('강아지'));
+
+      expect(state.text).toBe('강아지');
     });
   });
 });
