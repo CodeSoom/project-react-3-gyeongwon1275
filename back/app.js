@@ -10,7 +10,7 @@ const app = express();
 
 app.set('port', process.env.PORT || 80);
 
-const whiteList = ['http://localhost:3000'];
+const whiteList = ['http://localhost:1275'];
 
 app.use(
   cors({
