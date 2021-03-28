@@ -1,14 +1,40 @@
 const express = require('express');
+const cors = require('cors');
+
+const { sequelize } = require('./models');
+
+const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 
 const app = express();
 
 app.set('port', process.env.PORT || 80);
 
+const whiteList = ['http://localhost:3000'];
+
+app.use(
+  cors({
+    origin: whiteList,
+  }),
+);
+
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello AnimalPhy!');
+sequelize
+  .sync()
+  .then(() => {
+    console.log('db 연결 성공');
+  })
+  .catch((error) => {
+    console.error(error);
   });
 
+app.get('/', (req, res) => {
+  res.send('Hello AnimalPhy!');
+});
 
- module.exports = app;
+app.use('/post', postRouter);
+
+app.use('/posts', postsRouter);
+
+module.exports = app;
