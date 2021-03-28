@@ -7,7 +7,7 @@ module.exports = class Comment extends Model {
         content: {
           type: DataTypes.TEXT,
           allowNull: false,
-          unique: false, s,
+          unique: false,
         },
         created_at: {
           type: DataTypes.DATE,
