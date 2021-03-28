@@ -3,13 +3,16 @@ import { getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import postReducer,
 {
-  setError,
-  setFormVisible, setImageFile, setPosts, setPostText, writePost,
+  setError, setFormVisible, setImageFile,
+  setPosts, setPostText, writePost,
+  setPostReset,
 } from '../postReducer';
 
 import { getPosts, postImage, sendPost } from '../../services/api';
+import dataURLtoFile from '../../utils/index';
 
 jest.mock('../../services/api');
+jest.mock('../../utils');
 
 const middlewares = getDefaultMiddleware();
 const mockStore = configureStore(middlewares);
@@ -29,12 +32,13 @@ describe('postReducer', () => {
     it('changes imageFile', () => {
       const initialState = { imageFile: null };
 
-      const imageFile = new FormData();
-      imageFile.append('image', new Blob());
+      const readerResult = 'data:image/gif,abcd';
+      const name = 'dog.gif';
 
-      const state = postReducer(initialState, setImageFile(imageFile));
+      const { imageFile } = postReducer(initialState, setImageFile({ readerResult, name }));
 
-      expect(state.imageFile).not.toBeNull();
+      expect(imageFile.readerResult).toBe(readerResult);
+      expect(imageFile.name).toBe(name);
     });
   });
 
@@ -45,6 +49,21 @@ describe('postReducer', () => {
       const state = postReducer(initialState, setPostText('강아지'));
 
       expect(state.text).toBe('강아지');
+    });
+  });
+
+  describe('setPostReset', () => {
+    it('resets text, imageFile', () => {
+      const initialState = {
+        imageFile: { readerResult: 'data:image/gif,abcd', name: 'dog.gif' },
+        text: 'this is a dog',
+      };
+
+      const { text, imageFile } = postReducer(initialState, setPostReset());
+
+      expect(text).toBe('');
+      expect(imageFile.readerResult).toBe('');
+      expect(imageFile.name).toBe('');
     });
   });
 
@@ -61,19 +80,25 @@ describe('postReducer', () => {
   describe('writePost', () => {
     let store;
 
+    const initialState = {
+      formVisible: false,
+      imageFile: { readerResult: 'image/gif;base64,R0lGODlhYwETAfZ/ABQJCohWK', name: 'dog' },
+      text: '개입니다',
+      error: '',
+      posts: [],
+    };
+
     context('when error not occuered', () => {
       beforeEach(() => {
         jest.clearAllMocks();
 
+        dataURLtoFile.mockImplementationOnce(() => 'imageFile');
         postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
         sendPost.mockImplementationOnce(() => Promise.resolve());
         getPosts.mockImplementationOnce(() => Promise.resolve([]));
 
         store = mockStore({
-          post: {
-            imageFile: 'mock-image',
-            text: 'mock',
-          },
+          post: initialState,
         });
       });
 
@@ -81,25 +106,21 @@ describe('postReducer', () => {
         await store.dispatch(writePost());
 
         const actions = store.getActions();
-
-        expect(actions[0]).toEqual(setPosts());
+        expect(actions[0]).toEqual(setPosts([]));
       });
     });
 
     context('when error occuered', () => {
       beforeEach(() => {
         jest.clearAllMocks();
-
         postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
         sendPost.mockImplementationOnce(() => Promise.resolve());
+
         const mockError = { message: 'error' };
         getPosts.mockImplementationOnce(() => Promise.reject(mockError));
 
         store = mockStore({
-          post: {
-            imageFile: 'mock-image',
-            text: 'mock',
-          },
+          post: initialState,
         });
       });
 

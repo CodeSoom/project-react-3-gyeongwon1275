@@ -46,7 +46,7 @@ function PostForm({
   onChangeImage,
   onChangeText,
   onClick,
-  imageFile,
+  image,
   formVisible,
 }) {
   const imageFileInput = useRef(null);
@@ -76,7 +76,7 @@ function PostForm({
           onChangeText(event.target.value);
         }}
       />
-      <ImageWrapper src={imageFile} />
+      <ImageWrapper src={image} />
       <IconContainer>
         <ImageUploadButton type="button" onClick={openImageUpload}>
           <ImageIcon />

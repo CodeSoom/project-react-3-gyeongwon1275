@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import given from 'given2';
 
 import PostFormContainer from '../PostFormContainer';
+
 import { setPostText } from '../../data/postReducer';
 
 describe('PostFormContainer', () => {
@@ -14,9 +15,12 @@ describe('PostFormContainer', () => {
 
   const readAsDataURL = jest.spyOn(FileReader.prototype, 'readAsDataURL');
 
+  const addEventListener = jest.spyOn(FileReader.prototype, 'addEventListener');
+
   beforeEach(() => {
     dispatch.mockClear();
     readAsDataURL.mockClear();
+    addEventListener.mockClear();
 
     useDispatch.mockImplementation(() => dispatch);
 
@@ -24,7 +28,10 @@ describe('PostFormContainer', () => {
     useSelector.mockImplementation((selector) => selector({
       post: {
         formVisible: given.formVisible,
-        imageFile: given.imageFile,
+        imageFile: { readerResult: '', name: '' },
+        text: '',
+        error: '',
+        posts: [],
       },
     }));
   });
@@ -59,6 +66,10 @@ describe('PostFormContainer', () => {
     fireEvent.change(imageFileInput, { target: { files: [imageFile] } });
 
     expect(readAsDataURL).toHaveBeenCalledWith(imageFile);
+
+    fireEvent.load(imageFileInput);
+
+    expect(addEventListener).toHaveBeenCalled();
   });
 
   it('inputs post content text', () => {
@@ -71,5 +82,17 @@ describe('PostFormContainer', () => {
     fireEvent.change(textArea, { target: { value: '강아지' } });
 
     expect(dispatch).toHaveBeenCalledWith(setPostText('강아지'));
+  });
+
+  it('sends post', () => {
+    render(<PostFormContainer />);
+
+    const button = screen.getByRole('button', { name: '올리기' });
+
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+
+    expect(dispatch).toHaveBeenCalledTimes(3);
   });
 });

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../Header';
 
+import { initialState } from '../../data/postReducer';
+
 describe('Header', () => {
   const dispatch = jest.fn();
 
@@ -13,10 +15,7 @@ describe('Header', () => {
     dispatch.mockClear();
     useDispatch.mockImplementation(() => dispatch);
     useSelector.mockImplementation((selector) => selector({
-      post: {
-        formVisible: true,
-        imageFile: null,
-      },
+      post: initialState,
     }));
   });
 
