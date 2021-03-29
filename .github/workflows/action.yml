@@ -14,7 +14,7 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - name: Checkouit source code.
+    - name: Checkout source code.
       uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -34,6 +34,13 @@ jobs:
     - name: Install dependecies
       working-directory: ./front
       run: yarn 
+    
+    - name: Make env file
+      uses: SpicyPizza/create-envfile@v1
+      with: 
+        envkey_BASEURL: ${{secrets.BASEURL}}
+        directory: ./front
+        file_name: .env.production
 
     - name: Build
       working-directory: ./front

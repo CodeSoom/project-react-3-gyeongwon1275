@@ -4,11 +4,11 @@ import { render, screen } from '@testing-library/react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import App from './App';
+import Header from '../Header';
 
-import { initialState } from './data/postReducer';
+import { initialState } from '../../data/postReducer';
 
-describe('App', () => {
+describe('Header', () => {
   const dispatch = jest.fn();
 
   beforeEach(() => {
@@ -19,9 +19,10 @@ describe('App', () => {
     }));
   });
 
-  it('renders Header', () => {
-    render(<App />);
+  it('renders LOGO and upload icon button', () => {
+    render(<Header />);
 
     expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'plus-circle' })).toBeInTheDocument();
   });
 });
