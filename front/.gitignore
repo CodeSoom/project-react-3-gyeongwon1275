@@ -18,3 +18,7 @@ coverage
 
 ## webpack
 dist
+
+## env
+
+.env*

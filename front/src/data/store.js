@@ -2,10 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import post from './postReducer';
 
-const store = configureStore({
+export default configureStore({
   reducer: {
     post,
   },
+  devTools: process.env.NODE_ENV === 'development',
 });
-
-export default store;
