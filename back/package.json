@@ -8,7 +8,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "pm2 start server.js",
+    "stop": "pm2 stop server.js"
   },
   "dependencies": {
     "aws-sdk": "^2.874.0",
@@ -22,6 +24,7 @@
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "pm2": "^4.5.5",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0"
   },
