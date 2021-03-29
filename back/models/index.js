@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 
-const User = require('./user');
-const Post = require('./post');
-const Comment = require('./comment');
-const Image = require('./image');
+const User = require('./User');
+const Post = require('./Post');
+const Comment = require('./Comment');
+const Image = require('./Image');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
