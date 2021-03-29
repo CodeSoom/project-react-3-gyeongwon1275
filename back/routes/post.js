@@ -8,10 +8,6 @@ const multerS3 = require('multer-s3');
 
 const AWS = require('aws-sdk');
 
-const dotenv = require('dotenv');
-
-dotenv.config();
-
 const { Post, Image } = require('../models');
 
 const s3 = new AWS.S3({
