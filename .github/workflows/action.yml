@@ -38,7 +38,7 @@ jobs:
     - name: Make env file
       uses: SpicyPizza/create-envfile@v1
       with: 
-        BASEURL: ${{secrets.BASEURL}}
+        envkey_BASEURL: ${{secrets.BASEURL}}
         directory: ./front
         file_name: .env.production
 
