@@ -31,7 +31,7 @@ body {
   margin: 0px auto;
 }
 ol,
-ul.li {
+ul,li {
   list-style: none;
 }
 
