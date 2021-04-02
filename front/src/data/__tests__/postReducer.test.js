@@ -6,6 +6,7 @@ import postReducer,
   setError, setFormVisible, setImageFile,
   setPosts, setPostText, writePost,
   setPostReset,
+  loadPosts,
 } from '../postReducer';
 
 import { getPosts, postImage, sendPost } from '../../services/api';
@@ -18,6 +19,8 @@ const middlewares = getDefaultMiddleware();
 const mockStore = configureStore(middlewares);
 
 describe('postReducer', () => {
+  let store;
+
   describe('openPostForm', () => {
     it('changes setFormVisible', () => {
       const initialState = { formVisible: false };
@@ -78,8 +81,6 @@ describe('postReducer', () => {
   });
 
   describe('writePost', () => {
-    let store;
-
     const initialState = {
       formVisible: false,
       imageFile: { readerResult: 'image/gif;base64,R0lGODlhYwETAfZ/ABQJCohWK', name: 'dog' },
@@ -126,6 +127,51 @@ describe('postReducer', () => {
 
       it('runs setError', async () => {
         await store.dispatch(writePost());
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setError('error'));
+      });
+    });
+  });
+
+  describe('loadPosts', () => {
+    context('when error not occuered', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        getPosts.mockImplementationOnce(() => Promise.resolve([]));
+
+        store = mockStore({
+          post: {
+            posts: [],
+          },
+        });
+      });
+
+      it('runs setPosts', async () => {
+        await store.dispatch(loadPosts());
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setPosts([]));
+      });
+    });
+
+    context('when error occuered', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        const mockError = { message: 'error' };
+        getPosts.mockImplementationOnce(() => Promise.reject(mockError));
+
+        store = mockStore({
+          post: {
+            posts: [],
+          },
+        });
+      });
+      it('runs setError', async () => {
+        await store.dispatch(loadPosts());
 
         const actions = store.getActions();
 

@@ -47,6 +47,15 @@ export const {
   setPosts,
 } = actions;
 
+export const loadPosts = () => async (dispatch) => {
+  try {
+    const posts = await getPosts();
+    dispatch(setPosts(posts));
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
 export const writePost = () => async (dispatch, getState) => {
   const { post } = getState();
 
@@ -68,9 +77,7 @@ export const writePost = () => async (dispatch, getState) => {
 
     await sendPost({ text, url });
 
-    const posts = await getPosts();
-
-    dispatch(setPosts(posts));
+    dispatch(loadPosts());
   } catch (error) {
     dispatch(setError(error.message));
   }

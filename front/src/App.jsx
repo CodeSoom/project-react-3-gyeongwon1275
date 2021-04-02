@@ -1,11 +1,23 @@
 import React from 'react';
 
-import Header from './components/Header';
+import {
+  BrowserRouter as Router, Route, Switch, Redirect,
+} from 'react-router-dom';
+
+import DefaultLayout from './layouts/DefaultLayout';
+import Main from './pages/Main';
 
 export default function App() {
   return (
-    <div className="main-wrap">
-      <Header />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <DefaultLayout component={Main} />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
