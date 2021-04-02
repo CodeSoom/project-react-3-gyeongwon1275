@@ -28,6 +28,6 @@ module.exports = (env) => ({
     publicPath: '/',
     historyApiFallback: true,
     hot: true,
-    port: 1275,
+    port: 8080,
   },
 });
