@@ -4,12 +4,24 @@ import { render, screen } from '@testing-library/react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  MemoryRouter,
+} from 'react-router-dom';
+
 import App from './App';
 
 import { initialState } from './data/postReducer';
 
 describe('App', () => {
   const dispatch = jest.fn();
+
+  function renderApp({ path }) {
+    return render((
+      <MemoryRouter initialEntries={[path]}>
+        <App />
+      </MemoryRouter>
+    ));
+  }
 
   beforeEach(() => {
     dispatch.mockClear();
@@ -19,9 +31,19 @@ describe('App', () => {
     }));
   });
 
-  it('renders Header', () => {
-    render(<App />);
+  context('with path /', () => {
+    it('renders the main page', () => {
+      renderApp({ path: '/' });
 
-    expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
+      expect(screen.getByText('loading...')).toBeInTheDocument();
+    });
+  });
+
+  context('with undefined path', () => {
+    it('renders the main page', () => {
+      renderApp({ path: '/' });
+
+      expect(screen.getByText('loading...')).toBeInTheDocument();
+    });
   });
 });
