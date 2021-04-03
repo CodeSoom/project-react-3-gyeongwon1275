@@ -8,6 +8,7 @@ const { sequelize } = require('./models');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
+const imagesRouter = require('./routes/images');
 
 const app = express();
 
@@ -37,6 +38,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/post', postRouter);
+
+app.use('/images', imagesRouter);
 
 app.use('/posts', postsRouter);
 

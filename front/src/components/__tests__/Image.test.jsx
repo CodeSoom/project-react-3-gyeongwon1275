@@ -2,11 +2,11 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import Post from '../Post';
+import Image from '../Image';
 
-describe('Post', () => {
+describe('Image', () => {
   it('renders image ', () => {
-    render(<Post src="image" />);
+    render(<Image src="image" />);
 
     expect(screen.getByRole('img')).toBeInTheDocument();
   });

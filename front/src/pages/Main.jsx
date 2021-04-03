@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PostsContainer from '../container/PostsContainer';
+import ImagesContainer from '../container/ImagesContainer';
 
 export default function Main() {
   return (
     <div>
-      <PostsContainer />
+      <ImagesContainer />
     </div>
   );
 }
