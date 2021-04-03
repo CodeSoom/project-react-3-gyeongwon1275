@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getPosts, postImage, sendPost } from '../services/api';
+import {
+  getImages,
+  postImage,
+  sendPost,
+} from '../services/api';
 
 import dataURLtoFile from '../utils';
 
@@ -10,6 +14,7 @@ export const initialState = {
   text: '',
   error: '',
   posts: [],
+  images: [],
 };
 
 const { actions, reducer } = createSlice({
@@ -32,8 +37,8 @@ const { actions, reducer } = createSlice({
     setError(state, { payload: error }) {
       state.error = error;
     },
-    setPosts(state, { payload: posts }) {
-      state.posts = posts;
+    setImages(state, { payload: images }) {
+      state.images = images;
     },
   },
 });
@@ -45,12 +50,13 @@ export const {
   setPostReset,
   setError,
   setPosts,
+  setImages,
 } = actions;
 
-export const loadPosts = () => async (dispatch) => {
+export const loadImages = () => async (dispatch) => {
   try {
-    const posts = await getPosts();
-    dispatch(setPosts(posts));
+    const images = await getImages();
+    dispatch(setImages(images));
   } catch (error) {
     dispatch(setError(error.message));
   }
@@ -77,7 +83,7 @@ export const writePost = () => async (dispatch, getState) => {
 
     await sendPost({ text, url });
 
-    dispatch(loadPosts());
+    dispatch(loadImages());
   } catch (error) {
     dispatch(setError(error.message));
   }

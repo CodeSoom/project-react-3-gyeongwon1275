@@ -1,15 +1,25 @@
 import configureStore from 'redux-mock-store';
+
 import { getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import postReducer,
 {
-  setError, setFormVisible, setImageFile,
-  setPosts, setPostText, writePost,
+  setError,
+  setFormVisible,
+  setImageFile,
+  setPostText,
+  writePost,
   setPostReset,
-  loadPosts,
+  loadImages,
+  setImages,
 } from '../postReducer';
 
-import { getPosts, postImage, sendPost } from '../../services/api';
+import {
+  getImages,
+  postImage,
+  sendPost,
+} from '../../services/api';
+
 import dataURLtoFile from '../../utils/index';
 
 jest.mock('../../services/api');
@@ -87,6 +97,7 @@ describe('postReducer', () => {
       text: '개입니다',
       error: '',
       posts: [],
+      images: [],
     };
 
     context('when error not occuered', () => {
@@ -96,18 +107,18 @@ describe('postReducer', () => {
         dataURLtoFile.mockImplementationOnce(() => 'imageFile');
         postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
         sendPost.mockImplementationOnce(() => Promise.resolve());
-        getPosts.mockImplementationOnce(() => Promise.resolve([]));
+        getImages.mockImplementationOnce(() => Promise.resolve([]));
 
         store = mockStore({
           post: initialState,
         });
       });
 
-      it('runs setPosts', async () => {
+      it('runs setImages', async () => {
         await store.dispatch(writePost());
 
         const actions = store.getActions();
-        expect(actions[0]).toEqual(setPosts([]));
+        expect(actions[0]).toEqual(setImages([]));
       });
     });
 
@@ -118,7 +129,7 @@ describe('postReducer', () => {
         sendPost.mockImplementationOnce(() => Promise.resolve());
 
         const mockError = { message: 'error' };
-        getPosts.mockImplementationOnce(() => Promise.reject(mockError));
+        getImages.mockImplementationOnce(() => Promise.reject(mockError));
 
         store = mockStore({
           post: initialState,
@@ -135,25 +146,25 @@ describe('postReducer', () => {
     });
   });
 
-  describe('loadPosts', () => {
+  describe('loadImages', () => {
     context('when error not occuered', () => {
       beforeEach(() => {
         jest.clearAllMocks();
 
-        getPosts.mockImplementationOnce(() => Promise.resolve([]));
+        getImages.mockImplementationOnce(() => Promise.resolve([]));
 
         store = mockStore({
           post: {
-            posts: [],
+            images: [],
           },
         });
       });
 
-      it('runs setPosts', async () => {
-        await store.dispatch(loadPosts());
+      it('runs setImages', async () => {
+        await store.dispatch(loadImages());
         const actions = store.getActions();
 
-        expect(actions[0]).toEqual(setPosts([]));
+        expect(actions[0]).toEqual(setImages([]));
       });
     });
 
@@ -162,16 +173,16 @@ describe('postReducer', () => {
         jest.clearAllMocks();
 
         const mockError = { message: 'error' };
-        getPosts.mockImplementationOnce(() => Promise.reject(mockError));
+        getImages.mockImplementationOnce(() => Promise.reject(mockError));
 
         store = mockStore({
           post: {
-            posts: [],
+            images: [],
           },
         });
       });
       it('runs setError', async () => {
-        await store.dispatch(loadPosts());
+        await store.dispatch(loadImages());
 
         const actions = store.getActions();
 

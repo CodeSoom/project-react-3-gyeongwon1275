@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import given from 'given2';
 
-import PostsContainer from '../PostsContainer';
+import ImagesContainer from '../ImagesContainer';
 
-import mockPosts from '../../feature/mockData';
+import mockImages from '../../feature/mockData';
 
-describe('PostsContainer', () => {
+describe('ImagesContainer', () => {
   const dispatch = jest.fn();
 
   beforeEach(() => {
@@ -19,23 +19,23 @@ describe('PostsContainer', () => {
 
     useSelector.mockImplementation((selector) => selector({
       post: {
-        posts: given.posts,
+        images: given.images,
       },
     }));
   });
 
-  context('without posts', () => {
+  context('without images', () => {
     it('renders text "loading..."', () => {
-      given('posts', () => []);
-      render(<PostsContainer />);
+      given('images', () => []);
+      render(<ImagesContainer />);
       expect(screen.getByText('loading...')).toBeInTheDocument();
     });
   });
 
-  context('with posts', () => {
-    it('renders Posts with image', () => {
-      given('posts', () => mockPosts);
-      render(<PostsContainer />);
+  context('with images', () => {
+    it('renders Images', () => {
+      given('images', () => mockImages);
+      render(<ImagesContainer />);
       expect(screen.getByRole('img')).toBeInTheDocument();
     });
   });

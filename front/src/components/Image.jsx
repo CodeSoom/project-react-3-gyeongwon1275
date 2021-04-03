@@ -7,7 +7,7 @@ const StyledImage = styled.img({
   height: 'auto',
 });
 
-export default function Post({ src }) {
+export default function Image({ src, postId }) {
   return (
     <StyledImage src={src} alt="post" />
   );

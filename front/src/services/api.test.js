@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-import { getPosts, postImage, sendPost } from './api';
+import {
+  getImages,
+  postImage,
+  sendPost,
+} from './api';
 
 jest.mock('axios');
 
@@ -36,17 +40,19 @@ describe('api', () => {
     });
   });
 
-  describe('getPosts', () => {
-    const mockPost = { id: 1, text: 'dog', url: 'http://dog.com/dog1.gif' };
+  describe('getImages', () => {
+    const mockImage = {
+      id: 1, url: 'http://dog.com/dog1.gif', created_at: '2021-03-29T08:34:00.000Z', postId: 3,
+    };
 
     beforeEach(() => {
-      http.get.mockImplementationOnce(() => Promise.resolve({ data: { posts: [mockPost] } }));
+      http.get.mockImplementationOnce(() => Promise.resolve({ data: { images: [mockImage] } }));
     });
 
-    it('returns "ok" when request success', async () => {
-      const { posts } = await getPosts();
+    it('returns images when request success', async () => {
+      const { images } = await getImages();
 
-      expect(posts[0]).toMatchObject(mockPost);
+      expect(images[0]).toMatchObject(mockImage);
     });
   });
 });
