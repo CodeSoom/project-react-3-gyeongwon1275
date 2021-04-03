@@ -14,7 +14,7 @@ const app = express();
 
 app.set('port', process.env.PORT || 80);
 
-const whiteList = ['http://localhost:8080'];
+const whiteList = ['http://localhost:8080', 'http://animalphy-gyeongwon.s3-website.ap-northeast-2.amazonaws.com'];
 
 app.use(
   cors({
