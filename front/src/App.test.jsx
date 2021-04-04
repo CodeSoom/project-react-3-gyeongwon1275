@@ -39,6 +39,14 @@ describe('App', () => {
     });
   });
 
+  context('with path /post/:id', () => {
+    it('renders the PostDetail page', () => {
+      renderApp({ path: '/post/5' });
+
+      expect(screen.getByText('loading...')).toBeInTheDocument();
+    });
+  });
+
   context('with undefined path', () => {
     it('renders the main page', () => {
       renderApp({ path: '/' });

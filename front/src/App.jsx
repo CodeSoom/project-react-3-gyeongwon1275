@@ -5,7 +5,9 @@ import {
 } from 'react-router-dom';
 
 import DefaultLayout from './layouts/DefaultLayout';
+
 import Main from './pages/Main';
+import PostDetailPage from './pages/PostDetailPage';
 
 export default function App() {
   return (
@@ -13,6 +15,9 @@ export default function App() {
       <Switch>
         <Route exact path="/">
           <DefaultLayout component={Main} />
+        </Route>
+        <Route exact path="/post/:id">
+          <DefaultLayout component={PostDetailPage} />
         </Route>
         <Route path="*">
           <Redirect to="/" />

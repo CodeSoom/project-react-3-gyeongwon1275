@@ -15,3 +15,8 @@ export const getImages = async () => {
   const { data } = await http.get('/images');
   return data;
 };
+
+export const getPost = async (postId) => {
+  const { data } = await http.get(`/post/${postId}`);
+  return data;
+};

@@ -1,3 +1,3 @@
-const dataURLtoFile = jest.fn();
+export const dataURLtoFile = jest.fn();
 
-export default dataURLtoFile;
+export const getTimeDifferenceToNow = jest.fn();

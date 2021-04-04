@@ -1,4 +1,7 @@
-const dataURLtoFile = (dataurl, filename) => {
+import { formatDistanceToNow } from 'date-fns';
+import koreanLocale from 'date-fns/locale/ko';
+
+export const dataURLtoFile = (dataurl, filename) => {
   const arr = dataurl.split(',');
   const mime = arr[0].match(/:(.*?);/)[1];
   const bstr = atob(arr[1]);
@@ -13,4 +16,8 @@ const dataURLtoFile = (dataurl, filename) => {
   return new File([u8arr], filename, { type: mime });
 };
 
-export default dataURLtoFile;
+export const getTimeDifferenceToNow = (createdTime) => formatDistanceToNow(new Date(createdTime), {
+  includeSeconds: true,
+  addSuffix: true,
+  locale: koreanLocale,
+});

@@ -56,4 +56,19 @@ router.post('/', async (request, response, next) => {
   }
 });
 
+router.get('/:id', async (request, response, next) => {
+  const { id } = request.params;
+
+  try {
+    const post = await Post.findOne({
+      where: { id: id },
+      include: [{ model: Image }],
+    });
+
+    response.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
