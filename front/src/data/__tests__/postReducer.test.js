@@ -12,15 +12,18 @@ import postReducer,
   setPostReset,
   loadImages,
   setImages,
+  setPost,
+  loadPost,
 } from '../postReducer';
 
 import {
   getImages,
+  getPost,
   postImage,
   sendPost,
 } from '../../services/api';
 
-import dataURLtoFile from '../../utils/index';
+import { dataURLtoFile } from '../../utils/index';
 
 jest.mock('../../services/api');
 jest.mock('../../utils');
@@ -77,6 +80,17 @@ describe('postReducer', () => {
       expect(text).toBe('');
       expect(imageFile.readerResult).toBe('');
       expect(imageFile.name).toBe('');
+    });
+  });
+
+  describe('setPost', () => {
+    it('changes post', () => {
+      const initialState = {
+        post: null,
+      };
+
+      const { post } = postReducer(initialState, setPost([]));
+      expect(post).not.toBeNull();
     });
   });
 
@@ -183,6 +197,51 @@ describe('postReducer', () => {
       });
       it('runs setError', async () => {
         await store.dispatch(loadImages());
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setError('error'));
+      });
+    });
+  });
+
+  describe('loadPost', () => {
+    context('when error not occuered', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        getPost.mockImplementationOnce(() => Promise.resolve([]));
+
+        store = mockStore({
+          post: {
+            post: null,
+          },
+        });
+      });
+
+      it('runs setPost', async () => {
+        await store.dispatch(loadPost(1));
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setPost([]));
+      });
+    });
+
+    context('when error occuered', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        const mockError = { message: 'error' };
+        getPost.mockImplementationOnce(() => Promise.reject(mockError));
+
+        store = mockStore({
+          post: {
+            post: null,
+          },
+        });
+      });
+      it('runs setError', async () => {
+        await store.dispatch(loadPost(1));
 
         const actions = store.getActions();
 

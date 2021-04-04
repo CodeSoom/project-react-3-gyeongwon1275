@@ -1,13 +1,30 @@
 import React from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import Image from '../Image';
 
 describe('Image', () => {
-  it('renders image ', () => {
-    render(<Image src="image" />);
+  const onClick = jest.fn();
 
-    expect(screen.getByRole('img')).toBeInTheDocument();
+  beforeEach(() => {
+    onClick.mockClear();
+  });
+
+  it('renders image ', () => {
+    render((
+      <Image
+        src="image"
+        postId={1}
+        onClick={onClick}
+      />
+    ));
+
+    const image = screen.getByRole('img');
+    expect(image).toBeInTheDocument();
+
+    fireEvent.click(image);
+
+    expect(onClick).toHaveBeenCalledWith(1);
   });
 });
