@@ -56,6 +56,12 @@ const { actions, reducer } = createSlice({
     setPost(state, { payload: post }) {
       state.post = post;
     },
+    setPostDetailReset(state) {
+      state.post = null;
+      state.commentBoxOpen = false;
+      state.comment = '';
+      state.comments = [];
+    },
     setError(state, { payload: error }) {
       state.error = error;
     },
@@ -70,6 +76,7 @@ export const {
   setError,
   setPosts,
   setPost,
+  setPostDetailReset,
   setImages,
   setCommentBoxOpen,
   setComment,

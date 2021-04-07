@@ -10,17 +10,22 @@ import {
   setCommentBoxOpen,
   writeComment,
   loadComments,
+  setPostDetailReset,
 } from '../data/postReducer';
 
 export default function PostDetailContainer({ postId }) {
   const dispatch = useDispatch();
+
   const {
     post, commentBoxOpen, comment, comments,
   } = useSelector((state) => state.post);
 
   useEffect(() => {
     dispatch(loadPost(postId));
-  }, [dispatch]);
+    return () => {
+      dispatch(setPostDetailReset());
+    };
+  }, [dispatch, postId]);
 
   const handleCommentSubmit = () => {
     dispatch(writeComment(postId));

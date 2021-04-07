@@ -19,6 +19,7 @@ import postReducer,
   setComments,
   writeComment,
   loadComments,
+  setPostDetailReset,
 } from '../postReducer';
 
 import {
@@ -31,7 +32,7 @@ import {
 } from '../../services/api';
 
 import { dataURLtoFile } from '../../utils/index';
-import { mockComment } from '../../feature/mockData';
+import { mockComment, mockPost } from '../../feature/mockData';
 
 jest.mock('../../services/api');
 jest.mock('../../utils');
@@ -91,318 +92,339 @@ describe('postReducer', () => {
     });
   });
 
-  describe('setPost', () => {
-    it('changes post', () => {
+  describe('setPostDetailReset', () => {
+    it('resets post, commentBoxOpen, comment, comments', () => {
       const initialState = {
-        post: null,
+        post: mockPost,
+        commentBoxOpen: true,
+        comment: '댓글!',
+        comments: [mockComment],
       };
 
-      const { post } = postReducer(initialState, setPost([]));
-      expect(post).not.toBeNull();
+      const {
+        post, commentBoxOpen, comment, comments,
+      } = postReducer(initialState, setPostDetailReset());
+
+      expect(post).toBeNull();
+      expect(commentBoxOpen).toBe(false);
+      expect(comment).toBe('');
+      expect(comments).toEqual([]);
     });
-  });
 
-  describe('setCommentBoxOpen', () => {
-    it('changes commentBoxOpen', () => {
-      const initialState = { commentBoxOpen: false };
+    describe('setPost', () => {
+      it('changes post', () => {
+        const initialState = {
+          post: null,
+        };
 
-      const state = postReducer(initialState, setCommentBoxOpen());
-
-      expect(state.commentBoxOpen).toBe(true);
+        const { post } = postReducer(initialState, setPost([]));
+        expect(post).not.toBeNull();
+      });
     });
-  });
 
-  describe('setComment', () => {
-    it('changes comment', () => {
-      const initialState = { comment: '' };
+    describe('setCommentBoxOpen', () => {
+      it('changes commentBoxOpen', () => {
+        const initialState = { commentBoxOpen: false };
 
-      const state = postReducer(initialState, setComment('댓글'));
+        const state = postReducer(initialState, setCommentBoxOpen());
 
-      expect(state.comment).toBe('댓글');
+        expect(state.commentBoxOpen).toBe(true);
+      });
     });
-  });
 
-  describe('setComments', () => {
-    it('changes comments', () => {
-      const initialState = { comments: [] };
+    describe('setComment', () => {
+      it('changes comment', () => {
+        const initialState = { comment: '' };
 
-      const state = postReducer(initialState, setComments([mockComment]));
+        const state = postReducer(initialState, setComment('댓글'));
 
-      expect(state.comments[0]).toMatchObject(mockComment);
+        expect(state.comment).toBe('댓글');
+      });
     });
-  });
 
-  describe('setError', () => {
-    it('changes error', () => {
-      const initialState = { error: '' };
+    describe('setComments', () => {
+      it('changes comments', () => {
+        const initialState = { comments: [] };
 
-      const state = postReducer(initialState, setError('error'));
+        const state = postReducer(initialState, setComments([mockComment]));
 
-      expect(state.error).toBe('error');
+        expect(state.comments[0]).toMatchObject(mockComment);
+      });
     });
-  });
 
-  describe('writePost', () => {
-    const initialState = {
-      formVisible: false,
-      imageFile: { readerResult: 'image/gif;base64,R0lGODlhYwETAfZ/ABQJCohWK', name: 'dog' },
-      text: '개입니다',
-      error: '',
-      posts: [],
-      images: [],
-    };
+    describe('setError', () => {
+      it('changes error', () => {
+        const initialState = { error: '' };
 
-    context('when error not occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
+        const state = postReducer(initialState, setError('error'));
 
-        dataURLtoFile.mockImplementationOnce(() => 'imageFile');
-        postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
-        sendPost.mockImplementationOnce(() => Promise.resolve());
-        getImages.mockImplementationOnce(() => Promise.resolve([]));
+        expect(state.error).toBe('error');
+      });
+    });
 
-        store = mockStore({
-          post: initialState,
+    describe('writePost', () => {
+      const initialState = {
+        formVisible: false,
+        imageFile: { readerResult: 'image/gif;base64,R0lGODlhYwETAfZ/ABQJCohWK', name: 'dog' },
+        text: '개입니다',
+        error: '',
+        posts: [],
+        images: [],
+      };
+
+      context('when error not occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          dataURLtoFile.mockImplementationOnce(() => 'imageFile');
+          postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
+          sendPost.mockImplementationOnce(() => Promise.resolve());
+          getImages.mockImplementationOnce(() => Promise.resolve([]));
+
+          store = mockStore({
+            post: initialState,
+          });
+        });
+
+        it('runs setImages', async () => {
+          await store.dispatch(writePost());
+
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(setImages([]));
         });
       });
 
-      it('runs setImages', async () => {
-        await store.dispatch(writePost());
+      context('when error occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+          postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
+          sendPost.mockImplementationOnce(() => Promise.resolve());
 
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(setImages([]));
+          const mockError = { message: 'error' };
+          getImages.mockImplementationOnce(() => Promise.reject(mockError));
+
+          store = mockStore({
+            post: initialState,
+          });
+        });
+
+        it('runs setError', async () => {
+          await store.dispatch(writePost());
+
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setError('error'));
+        });
       });
     });
 
-    context('when error occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-        postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
-        sendPost.mockImplementationOnce(() => Promise.resolve());
+    describe('loadImages', () => {
+      context('when error not occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        const mockError = { message: 'error' };
-        getImages.mockImplementationOnce(() => Promise.reject(mockError));
+          getImages.mockImplementationOnce(() => Promise.resolve([]));
 
-        store = mockStore({
-          post: initialState,
+          store = mockStore({
+            post: {
+              images: [],
+            },
+          });
+        });
+
+        it('runs setImages', async () => {
+          await store.dispatch(loadImages());
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setImages([]));
         });
       });
 
-      it('runs setError', async () => {
-        await store.dispatch(writePost());
+      context('when error occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        const actions = store.getActions();
+          const mockError = { message: 'error' };
+          getImages.mockImplementationOnce(() => Promise.reject(mockError));
 
-        expect(actions[0]).toEqual(setError('error'));
-      });
-    });
-  });
-
-  describe('loadImages', () => {
-    context('when error not occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-
-        getImages.mockImplementationOnce(() => Promise.resolve([]));
-
-        store = mockStore({
-          post: {
-            images: [],
-          },
+          store = mockStore({
+            post: {
+              images: [],
+            },
+          });
         });
-      });
 
-      it('runs setImages', async () => {
-        await store.dispatch(loadImages());
-        const actions = store.getActions();
+        it('runs setError', async () => {
+          await store.dispatch(loadImages());
 
-        expect(actions[0]).toEqual(setImages([]));
-      });
-    });
+          const actions = store.getActions();
 
-    context('when error occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-
-        const mockError = { message: 'error' };
-        getImages.mockImplementationOnce(() => Promise.reject(mockError));
-
-        store = mockStore({
-          post: {
-            images: [],
-          },
+          expect(actions[0]).toEqual(setError('error'));
         });
-      });
-      it('runs setError', async () => {
-        await store.dispatch(loadImages());
-
-        const actions = store.getActions();
-
-        expect(actions[0]).toEqual(setError('error'));
-      });
-    });
-  });
-
-  describe('loadPost', () => {
-    context('when error not occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-
-        getPost.mockImplementationOnce(() => Promise.resolve([]));
-
-        store = mockStore({
-          post: {
-            post: null,
-          },
-        });
-      });
-
-      it('runs setPost', async () => {
-        await store.dispatch(loadPost(1));
-        const actions = store.getActions();
-
-        expect(actions[0]).toEqual(setPost([]));
       });
     });
 
-    context('when error occuered', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
+    describe('loadPost', () => {
+      context('when error not occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        const mockError = { message: 'error' };
-        getPost.mockImplementationOnce(() => Promise.reject(mockError));
+          getPost.mockImplementationOnce(() => Promise.resolve([]));
 
-        store = mockStore({
-          post: {
-            post: null,
-          },
+          store = mockStore({
+            post: {
+              post: null,
+            },
+          });
         });
-      });
-      it('runs setError', async () => {
-        await store.dispatch(loadPost(1));
 
-        const actions = store.getActions();
+        it('runs setPost', async () => {
+          await store.dispatch(loadPost(1));
+          const actions = store.getActions();
 
-        expect(actions[0]).toEqual(setError('error'));
-      });
-    });
-  });
-
-  describe('loadComments', () => {
-    beforeAll(() => {});
-    context('when commentBox not opened', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-        getComments.mockImplementation(() => Promise.resolve([]));
-
-        store = mockStore({
-          post: {
-            comments: [],
-            commentBoxOpen: false,
-          },
+          expect(actions[0]).toEqual(setPost([]));
         });
       });
 
-      it("doesn't run ", async () => {
-        await store.dispatch(loadComments(1));
-        const actions = store.getActions();
+      context('when error occuered', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        expect(actions).toEqual([]);
-      });
-    });
+          const mockError = { message: 'error' };
+          getPost.mockImplementationOnce(() => Promise.reject(mockError));
 
-    context('when error not occurred', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-        getComments.mockImplementation(() => Promise.resolve([]));
-
-        store = mockStore({
-          post: {
-            comments: [],
-            commentBoxOpen: true,
-          },
+          store = mockStore({
+            post: {
+              post: null,
+            },
+          });
         });
-      });
 
-      it('runs setComments', async () => {
-        await store.dispatch(loadComments(1));
-        const actions = store.getActions();
+        it('runs setError', async () => {
+          await store.dispatch(loadPost(1));
 
-        expect(actions[0]).toEqual(setComments([]));
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setError('error'));
+        });
       });
     });
 
-    context('when error occurred', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-        const mockError = { message: 'error' };
-        getComments.mockImplementation(() => Promise.reject(mockError));
+    describe('loadComments', () => {
+      context('when commentBox not opened', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+          getComments.mockImplementation(() => Promise.resolve([]));
 
-        store = mockStore({
-          post: {
-            comments: [],
-            commentBoxOpen: true,
-          },
+          store = mockStore({
+            post: {
+              comments: [],
+              commentBoxOpen: false,
+            },
+          });
+        });
+
+        it("doesn't run ", async () => {
+          await store.dispatch(loadComments(1));
+          const actions = store.getActions();
+
+          expect(actions).toEqual([]);
         });
       });
 
-      it('runs setError', async () => {
-        await store.dispatch(loadComments(1));
+      context('when error not occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+          getComments.mockImplementation(() => Promise.resolve([]));
 
-        const actions = store.getActions();
+          store = mockStore({
+            post: {
+              comments: [],
+              commentBoxOpen: true,
+            },
+          });
+        });
 
-        expect(actions[0]).toEqual(setError('error'));
+        it('runs setComments', async () => {
+          await store.dispatch(loadComments(1));
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setComments([]));
+        });
+      });
+
+      context('when error occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+          const mockError = { message: 'error' };
+          getComments.mockImplementation(() => Promise.reject(mockError));
+
+          store = mockStore({
+            post: {
+              comments: [],
+              commentBoxOpen: true,
+            },
+          });
+        });
+
+        it('runs setError', async () => {
+          await store.dispatch(loadComments(1));
+
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setError('error'));
+        });
       });
     });
-  });
 
-  describe('writeComment', () => {
-    context('when error not occurred', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
+    describe('writeComment', () => {
+      context('when error not occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        sendComment.mockImplementationOnce(() => Promise.resolve());
-        getComments.mockImplementation(() => Promise.resolve([]));
-        store = mockStore({
-          post: {
-            post: null,
-            comment: '댓글!',
-            commentBoxOpen: true,
-          },
+          sendComment.mockImplementationOnce(() => Promise.resolve());
+          getComments.mockImplementation(() => Promise.resolve([]));
+          store = mockStore({
+            post: {
+              post: null,
+              comment: '댓글!',
+              commentBoxOpen: true,
+            },
+          });
+        });
+
+        it('runs setComments, setComment', async () => {
+          await store.dispatch(writeComment(1));
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setComments([]));
+          expect(actions[1]).toEqual(setComment(''));
         });
       });
 
-      it('runs setComments, setComment', async () => {
-        await store.dispatch(writeComment(1));
-        const actions = store.getActions();
+      context('when error occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
 
-        expect(actions[0]).toEqual(setComments([]));
-        expect(actions[1]).toEqual(setComment(''));
-      });
-    });
+          const mockError = { message: 'error' };
+          sendComment.mockRejectedValue((mockError));
+          getComments.mockRejectedValue(mockError);
 
-    context('when error occurred', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-
-        const mockError = { message: 'error' };
-        sendComment.mockRejectedValue((mockError));
-        getComments.mockRejectedValue(mockError);
-
-        store = mockStore({
-          post: {
-            post: null,
-            comment: '댓글!',
-          },
+          store = mockStore({
+            post: {
+              post: null,
+              comment: '댓글!',
+            },
+          });
         });
-      });
 
-      it('runs setError', async () => {
-        await store.dispatch(writeComment(1));
+        it('runs setError', async () => {
+          await store.dispatch(writeComment(1));
 
-        const actions = store.getActions();
+          const actions = store.getActions();
 
-        expect(actions[0]).toEqual(setError('error'));
+          expect(actions[0]).toEqual(setError('error'));
+        });
       });
     });
   });
