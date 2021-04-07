@@ -8,7 +8,7 @@ const multerS3 = require('multer-s3');
 
 const AWS = require('aws-sdk');
 
-const { Post, Image } = require('../models');
+const { Post, Image, Comment } = require('../models');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -66,6 +66,56 @@ router.get('/:id', async (request, response, next) => {
     });
 
     response.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/:id/comment', async (request, response, next) => {
+  const { id } = request.params;
+
+  try {
+    const post = await Post.findOne({
+      where: { id },
+    });
+
+    if (!post) {
+      return response.status(404).send('존재하지 않는 게시글입니다.');
+    }
+
+    const { comment: content } = request.body
+
+    await Comment.create({
+      content: content,
+      postId: id,
+    })
+
+    response.status(201).send('ok');
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/:id/comments', async (request, response, next) => {
+  const { id } = request.params;
+
+  try {
+    const post = await Post.findOne({
+      where: { id },
+    });
+
+    if (!post) {
+      return response.status(404).send('존재하지 않는 게시글입니다.');
+    }
+
+    const comments = await Comment.findAll({
+      where: {
+        postId: id,
+      },
+      limit: 10,
+      order: [['created_at', 'DESC']],
+    })
+    response.status(200).send(comments);
   } catch (error) {
     next(error);
   }

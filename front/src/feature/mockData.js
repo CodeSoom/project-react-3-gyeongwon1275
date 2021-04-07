@@ -19,6 +19,13 @@ export const mockPost = {
       created_at: '2021-03-29T08:34:00.000Z',
       postId: 2,
     },
-
   ],
+};
+
+export const mockComment = {
+  id: 1,
+  content: '댓글',
+  created_at: '2021-03-29T08:34:00.000Z',
+  userId: 4,
+  postId: 6,
 };

@@ -20,3 +20,10 @@ export const getPost = async (postId) => {
   const { data } = await http.get(`/post/${postId}`);
   return data;
 };
+
+export const sendComment = ({ postId, comment }) => http.post(`/post/${postId}/comment`, { comment });
+
+export const getComments = async (postId) => {
+  const { data } = await http.get(`/post/${postId}/comments`);
+  return data;
+};
