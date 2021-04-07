@@ -15,6 +15,9 @@ import styled from '@emotion/styled';
 
 import { getTimeDifferenceToNow } from '../utils';
 
+import CommentForm from './CommentForm';
+import Comments from './Comments';
+
 const PostWrapper = styled.div({
   margin: '1rem auto',
 
@@ -33,18 +36,34 @@ const StyledImage = styled.img({
   width: '100%',
 });
 
-export default function PostDetail({ post }) {
+const CommentBox = styled.div({
+  padding: '0 1.5rem',
+
+  width: '100%',
+  height: '25%',
+
+  background: '#141414',
+  border: '1px solid #303030',
+
+  overflowY: 'auto',
+
+});
+
+export default function PostDetail({
+  post, commentBoxOpen, onClickCommentIcon, comment, comments, onChange, onSubmit,
+}) {
   const { content, created_at: createdTime, images } = post;
 
   return (
     <PostWrapper>
       <StyledPost
         actions={[
-          <LikeOutlined />,
-          <DislikeOutlined />,
-          <CommentOutlined />,
+          <LikeOutlined role="button" />,
+          <DislikeOutlined role="button" />,
+          <CommentOutlined role="button" onClick={onClickCommentIcon} />,
         ]}
       >
+
         <Comment
           avatar={
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
@@ -59,6 +78,15 @@ export default function PostDetail({ post }) {
           </li>
         ))}
       </StyledPost>
+      <CommentBox>
+        <Comments comments={comments} />
+        <CommentForm
+          commentBoxOpen={commentBoxOpen}
+          comment={comment}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
+      </CommentBox>
     </PostWrapper>
   );
 }

@@ -5,6 +5,8 @@ import {
   getPost,
   postImage,
   sendPost,
+  sendComment,
+  getComments,
 } from '../services/api';
 
 import { dataURLtoFile } from '../utils';
@@ -17,6 +19,9 @@ export const initialState = {
   posts: [],
   post: null,
   images: [],
+  commentBoxOpen: false,
+  comment: '',
+  comments: [],
 };
 
 const { actions, reducer } = createSlice({
@@ -36,14 +41,23 @@ const { actions, reducer } = createSlice({
       state.text = '';
       state.imageFile = { readerResult: '', name: '' };
     },
-    setError(state, { payload: error }) {
-      state.error = error;
-    },
     setImages(state, { payload: images }) {
       state.images = images;
     },
+    setCommentBoxOpen(state) {
+      state.commentBoxOpen = !state.commentBoxOpen;
+    },
+    setComment(state, { payload: comment }) {
+      state.comment = comment;
+    },
+    setComments(state, { payload: comments }) {
+      state.comments = comments;
+    },
     setPost(state, { payload: post }) {
       state.post = post;
+    },
+    setError(state, { payload: error }) {
+      state.error = error;
     },
   },
 });
@@ -57,6 +71,9 @@ export const {
   setPosts,
   setPost,
   setImages,
+  setCommentBoxOpen,
+  setComment,
+  setComments,
 } = actions;
 
 export const loadImages = () => async (dispatch) => {
@@ -99,6 +116,38 @@ export const writePost = () => async (dispatch, getState) => {
     await sendPost({ text, url });
 
     dispatch(loadImages());
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
+export const loadComments = (postId) => async (dispatch, getState) => {
+  try {
+    const { post } = getState();
+
+    if (!post.commentBoxOpen) {
+      return;
+    }
+
+    const comments = await getComments(postId);
+    dispatch(setComments(comments));
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
+export const writeComment = (postId) => async (dispatch, getState) => {
+  const { post } = getState();
+  const { comment } = post;
+
+  if (!comment) {
+    return;
+  }
+
+  try {
+    await sendComment({ postId, comment });
+    await dispatch(loadComments(postId));
+    dispatch(setComment(''));
   } catch (error) {
     dispatch(setError(error.message));
   }

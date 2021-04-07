@@ -1,13 +1,15 @@
 import axios from 'axios';
 
 import {
+  getComments,
   getImages,
   getPost,
   postImage,
+  sendComment,
   sendPost,
 } from './api';
 
-import { mockImages, mockPost } from '../feature/mockData';
+import { mockComment, mockImages, mockPost } from '../feature/mockData';
 
 jest.mock('axios');
 
@@ -64,6 +66,30 @@ describe('api', () => {
       const data = await getPost(2);
 
       expect(data).toMatchObject(mockPost);
+    });
+  });
+
+  describe('sendComment', () => {
+    beforeEach(() => {
+      http.post.mockImplementationOnce(() => Promise.resolve({ data: 'ok' }));
+    });
+
+    it('returns "ok" when request success', async () => {
+      const { data } = await sendComment({ postId: 1, comment: '댓글입니다.' });
+
+      expect(data).toBe('ok');
+    });
+  });
+
+  describe('getComments', () => {
+    beforeEach(() => {
+      http.get.mockImplementationOnce(() => Promise.resolve({ data: [mockComment] }));
+    });
+
+    it('returns images when request success', async () => {
+      const data = await getComments();
+
+      expect(data[0]).toMatchObject(mockComment);
     });
   });
 });
