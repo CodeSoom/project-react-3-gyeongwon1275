@@ -27,3 +27,5 @@ export const getComments = async (postId) => {
   const { data } = await http.get(`/post/${postId}/comments`);
   return data;
 };
+
+export const postSignUp = (formValues) => http.post('/user/signup', formValues);
