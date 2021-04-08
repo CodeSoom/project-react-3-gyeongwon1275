@@ -172,7 +172,7 @@ describe('postReducer', () => {
         images: [],
       };
 
-      context('when error not occuered', () => {
+      context('when error not occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
 
@@ -194,7 +194,7 @@ describe('postReducer', () => {
         });
       });
 
-      context('when error occuered', () => {
+      context('when error occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
           postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
@@ -219,7 +219,7 @@ describe('postReducer', () => {
     });
 
     describe('loadImages', () => {
-      context('when error not occuered', () => {
+      context('when error not occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
 
@@ -240,7 +240,7 @@ describe('postReducer', () => {
         });
       });
 
-      context('when error occuered', () => {
+      context('when error occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
 
@@ -265,7 +265,7 @@ describe('postReducer', () => {
     });
 
     describe('loadPost', () => {
-      context('when error not occuered', () => {
+      context('when error not occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
 
@@ -286,7 +286,7 @@ describe('postReducer', () => {
         });
       });
 
-      context('when error occuered', () => {
+      context('when error occurred', () => {
         beforeEach(() => {
           jest.clearAllMocks();
 
