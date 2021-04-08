@@ -29,3 +29,12 @@ export const mockComment = {
   userId: 4,
   postId: 6,
 };
+
+export const mockSignUpFormValues = {
+  userId: 'rud123',
+  password: '123',
+  passwordConfirm: '123',
+  userName: '김붕어',
+  email: 'rud123@naver.com',
+  phone: '01012345678',
+};
