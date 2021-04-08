@@ -5,9 +5,11 @@ import {
 } from 'react-router-dom';
 
 import DefaultLayout from './layouts/DefaultLayout';
+import PublicLayout from './layouts/PublicLayout';
 
 import Main from './pages/Main';
 import PostDetailPage from './pages/PostDetailPage';
+import SignUpContainer from './container/SignUpContainer';
 
 export default function App() {
   return (
@@ -18,6 +20,9 @@ export default function App() {
         </Route>
         <Route exact path="/post/:id">
           <DefaultLayout component={PostDetailPage} />
+        </Route>
+        <Route exact path="/signup">
+          <PublicLayout component={SignUpContainer} />
         </Route>
         <Route path="*">
           <Redirect to="/" />

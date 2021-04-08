@@ -5,11 +5,17 @@ import {
   getImages,
   getPost,
   postImage,
+  postSignUp,
   sendComment,
   sendPost,
 } from './api';
 
-import { mockComment, mockImages, mockPost } from '../feature/mockData';
+import {
+  mockComment,
+  mockImages,
+  mockPost,
+  mockSignUpFormValues,
+} from '../feature/mockData';
 
 jest.mock('axios');
 
@@ -90,6 +96,18 @@ describe('api', () => {
       const data = await getComments();
 
       expect(data[0]).toMatchObject(mockComment);
+    });
+  });
+
+  describe('postSignUp', () => {
+    beforeEach(() => {
+      http.post.mockImplementationOnce(() => Promise.resolve({ data: 'ok' }));
+    });
+
+    it('returns "ok" when request success', async () => {
+      const { data } = await postSignUp(mockSignUpFormValues);
+
+      expect(data).toBe('ok');
     });
   });
 });
