@@ -48,7 +48,7 @@ describe('userReducer', () => {
       error: '',
     };
 
-    context('when error not occuered', () => {
+    context('when error not occurred', () => {
       beforeEach(() => {
         jest.clearAllMocks();
 
@@ -68,7 +68,7 @@ describe('userReducer', () => {
       });
     });
 
-    context('when error occuered', () => {
+    context('when error occurred', () => {
       beforeEach(() => {
         jest.clearAllMocks();
 
