@@ -1,8 +1,9 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const passport = require('passport');
 
 const { sequelize } = require('./models');
 
@@ -10,6 +11,8 @@ const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const imagesRouter = require('./routes/images');
 const userRouter = require('./routes/user')
+
+const passportConfig = require('./passport');
 
 const app = express();
 
@@ -24,6 +27,9 @@ app.use(
 );
 
 app.use(express.json());
+
+passportConfig();
+app.use(passport.initialize());
 
 sequelize
   .sync()
