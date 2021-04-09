@@ -38,3 +38,8 @@ export const mockSignUpFormValues = {
   email: 'rud123@naver.com',
   phone: '01012345678',
 };
+
+export const mockLoginFormValues = {
+  userId: 'rud123',
+  password: '123',
+};

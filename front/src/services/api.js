@@ -29,3 +29,17 @@ export const getComments = async (postId) => {
 };
 
 export const postSignUp = (formValues) => http.post('/user/signup', formValues);
+
+export const postLogin = async (formValues) => {
+  const { data } = await http.post('/user/login', formValues);
+  return data;
+};
+
+export const getUser = async (accessToken) => {
+  const options = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+  const { data } = await http.get('/user', options);
+
+  return data;
+};

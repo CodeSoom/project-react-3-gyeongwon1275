@@ -11,3 +11,7 @@ export const sendComment = jest.fn();
 export const getComments = jest.fn();
 
 export const postSignUp = jest.fn();
+
+export const postLogin = jest.fn();
+
+export const getUser = jest.fn();

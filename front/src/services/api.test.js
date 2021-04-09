@@ -6,8 +6,10 @@ import {
   getPost,
   postImage,
   postSignUp,
+  postLogin,
   sendComment,
   sendPost,
+  getUser,
 } from './api';
 
 import {
@@ -15,6 +17,7 @@ import {
   mockImages,
   mockPost,
   mockSignUpFormValues,
+  mockLoginFormValues,
 } from '../feature/mockData';
 
 jest.mock('axios');
@@ -108,6 +111,30 @@ describe('api', () => {
       const { data } = await postSignUp(mockSignUpFormValues);
 
       expect(data).toBe('ok');
+    });
+  });
+
+  describe('postLogin', () => {
+    beforeEach(() => {
+      http.post.mockImplementationOnce(() => Promise.resolve({ data: { accessToken: '1234' } }));
+    });
+
+    it('returns accessToken when request success', async () => {
+      const { accessToken } = await postLogin(mockLoginFormValues);
+
+      expect(accessToken).toBe('1234');
+    });
+  });
+
+  describe('getUser', () => {
+    beforeEach(() => {
+      http.get.mockImplementationOnce(() => Promise.resolve({ data: { } }));
+    });
+
+    it('returns user info when request success', async () => {
+      const user = await getUser('1234');
+
+      expect(user).toEqual({});
     });
   });
 });

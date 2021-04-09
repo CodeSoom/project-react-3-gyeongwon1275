@@ -4,16 +4,22 @@ import { getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import userReducer,
 {
+  login,
+  setAccessToken,
+  setUser,
   setError,
   setSignUpSucceded,
   signUp,
+  loadUser,
 } from '../userReducer';
 
 import {
+  getUser,
+  postLogin,
   postSignUp,
 } from '../../services/api';
 
-import { mockSignUpFormValues } from '../../feature/mockData';
+import { mockLoginFormValues, mockSignUpFormValues } from '../../feature/mockData';
 
 jest.mock('../../services/api');
 
@@ -30,6 +36,26 @@ describe('userReducer', () => {
       const state = userReducer(initialState, setSignUpSucceded());
 
       expect(state.signUpSucceded).toBe(true);
+    });
+  });
+
+  describe('setAccessToken', () => {
+    it('changes accessToken', () => {
+      const initialState = { accessToken: '' };
+
+      const state = userReducer(initialState, setAccessToken('1234'));
+
+      expect(state.accessToken).toBe('1234');
+    });
+  });
+
+  describe('setUser', () => {
+    it('changes user', () => {
+      const initialState = { user: null };
+
+      const state = userReducer(initialState, setUser({}));
+
+      expect(state.user).toEqual({});
     });
   });
 
@@ -76,12 +102,108 @@ describe('userReducer', () => {
         postSignUp.mockImplementationOnce(() => Promise.reject(mockError));
 
         store = mockStore({
-          post: initialState,
+          user: initialState,
         });
       });
 
       it('runs setError', async () => {
         await store.dispatch(signUp(mockSignUpFormValues));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setError('error'));
+      });
+    });
+  });
+
+  describe('loadUser', () => {
+    const initialState = {
+      user: null,
+    };
+
+    context('when error not occurred', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        getUser.mockImplementationOnce(() => Promise.resolve({}));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setUser', async () => {
+        await store.dispatch(loadUser('1234'));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setUser({}));
+      });
+    });
+
+    context('when error occurred', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        const mockError = { message: 'error' };
+        getUser.mockImplementationOnce(() => Promise.reject(mockError));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setError', async () => {
+        await store.dispatch(loadUser('1234'));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setError('error'));
+      });
+    });
+  });
+
+  describe('login', () => {
+    const initialState = {
+      accessToken: '',
+      user: null,
+      error: '',
+    };
+
+    context('when error not occurred', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        postLogin.mockImplementationOnce(() => Promise.resolve({ accessToken: '1234' }));
+        getUser.mockImplementationOnce(() => Promise.resolve({}));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setAccessToken, setUser', async () => {
+        await store.dispatch(login(mockLoginFormValues));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setAccessToken('1234'));
+        expect(actions[1]).toEqual(setUser({}));
+      });
+    });
+
+    context('when error occurred', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+
+        const mockError = { message: 'error' };
+        postLogin.mockImplementationOnce(() => Promise.reject(mockError));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setError', async () => {
+        await store.dispatch(login(mockLoginFormValues));
 
         const actions = store.getActions();
 
