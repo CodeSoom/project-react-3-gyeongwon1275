@@ -84,7 +84,7 @@ describe('api', () => {
     });
 
     it('returns "ok" when request success', async () => {
-      const { data } = await sendComment({ postId: 1, comment: '댓글입니다.' });
+      const { data } = await sendComment({ postId: 1, comment: '댓글입니다.', userId: 3 });
 
       expect(data).toBe('ok');
     });
