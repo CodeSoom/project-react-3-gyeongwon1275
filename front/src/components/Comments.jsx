@@ -14,13 +14,15 @@ export default function Comments({ comments }) {
 
   return (
     <>
-      {comments.map(({ id, content, created_at: createdTime }) => (
+      {comments.map(({
+        id, content, created_at: createdTime, user,
+      }) => (
         <li key={id}>
           <Comment
             avatar={
               <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
             }
-            author="아무개"
+            author={user ? user.name : '아무개'}
             content={content}
             datetime={getTimeDifferenceToNow(createdTime)}
           />
