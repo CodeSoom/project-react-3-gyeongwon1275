@@ -9,12 +9,20 @@ import styled from '@emotion/styled';
 import { setFormVisible } from '../data/postReducer';
 
 import PostFormContainer from '../container/PostFormContainer';
+import LoginButtonContainer from '../container/LoginButtonContainer';
 
 const PlusIcon = styled(PlusCircleFilled)({
   fontSize: '2rem',
   color: '#333',
   backgroundColor: '#fff',
   borderRadius: '1rem',
+});
+
+const StyledHeadr = styled.div({
+
+  display: 'flex',
+  justifyContent: 'flex-start',
+
 });
 
 export default function Header() {
@@ -25,14 +33,15 @@ export default function Header() {
   };
 
   return (
-    <div className="header">
+    <StyledHeadr>
       <div className="logo-box">AnimalPhy</div>
       <div className="upload-box">
         <button type="button" onClick={openPostForm}>
           <PlusIcon />
         </button>
       </div>
+      <LoginButtonContainer />
       <PostFormContainer />
-    </div>
+    </StyledHeadr>
   );
 }
