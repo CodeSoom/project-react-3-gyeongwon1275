@@ -21,7 +21,7 @@ export const getPost = async (postId) => {
   return data;
 };
 
-export const sendComment = ({ postId, comment }) => http.post(`/post/${postId}/comment`, { comment });
+export const sendComment = ({ postId, comment, userId }) => http.post(`/post/${postId}/comment`, { comment, userId });
 
 export const getComments = async (postId) => {
   const { data } = await http.get(`/post/${postId}/comments`);
