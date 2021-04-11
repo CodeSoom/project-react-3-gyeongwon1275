@@ -11,7 +11,7 @@ export const mockPost = {
   id: 1,
   content: '개사진 입니다.',
   created_at: '2021-03-29T08:34:00.000Z',
-  userId: null,
+  userId: 3,
   images: [
     {
       id: 1,
@@ -20,6 +20,7 @@ export const mockPost = {
       postId: 2,
     },
   ],
+  user: { name: '김붕어' },
 };
 
 export const mockComment = {
@@ -42,4 +43,12 @@ export const mockSignUpFormValues = {
 export const mockLoginFormValues = {
   userId: 'rud123',
   password: '123',
+};
+
+export const mockUser = {
+  id: 3,
+  user_id: 'rud285',
+  name: '김붕어',
+  phone: '01086901275',
+  created_at: '2021-03-29T08:34:00.000Z',
 };

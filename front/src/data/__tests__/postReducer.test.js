@@ -32,7 +32,7 @@ import {
 } from '../../services/api';
 
 import { dataURLtoFile } from '../../utils/index';
-import { mockComment, mockPost } from '../../feature/mockData';
+import { mockComment, mockPost, mockUser } from '../../feature/mockData';
 
 jest.mock('../../services/api');
 jest.mock('../../utils');
@@ -117,8 +117,18 @@ describe('postReducer', () => {
           post: null,
         };
 
-        const { post } = postReducer(initialState, setPost([]));
-        expect(post).not.toBeNull();
+        const { post } = postReducer(initialState, setPost(mockPost));
+
+        const {
+          id, content, created_at: createdAt, userId, images, user,
+        } = post;
+
+        expect(id).toBe(mockPost.id);
+        expect(content).toBe(mockPost.content);
+        expect(createdAt).toBe(mockPost.created_at);
+        expect(userId).toBe(mockPost.userId);
+        expect(images).toEqual(mockPost.images);
+        expect(user).toEqual(mockPost.user);
       });
     });
 
@@ -183,6 +193,9 @@ describe('postReducer', () => {
 
           store = mockStore({
             post: initialState,
+            user: {
+              user: null,
+            },
           });
         });
 
@@ -191,6 +204,54 @@ describe('postReducer', () => {
 
           const actions = store.getActions();
           expect(actions[0]).toEqual(setImages([]));
+        });
+      });
+
+      context('with user', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          dataURLtoFile.mockImplementationOnce(() => 'imageFile');
+          postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
+          sendPost.mockImplementationOnce(() => Promise.resolve());
+          getImages.mockImplementationOnce(() => Promise.resolve([]));
+
+          store = mockStore({
+            post: initialState,
+            user: {
+              user: mockUser,
+            },
+          });
+        });
+
+        it('calls sendPost with text,url,userId', async () => {
+          await store.dispatch(writePost());
+
+          expect(sendPost).toHaveBeenCalledWith({ text: '개입니다', url: 'image-url', userId: 3 });
+        });
+      });
+
+      context('without user', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          dataURLtoFile.mockImplementationOnce(() => 'imageFile');
+          postImage.mockImplementationOnce(() => Promise.resolve({ url: 'image-url' }));
+          sendPost.mockImplementationOnce(() => Promise.resolve());
+          getImages.mockImplementationOnce(() => Promise.resolve([]));
+
+          store = mockStore({
+            post: initialState,
+            user: {
+              user: null,
+            },
+          });
+        });
+
+        it('calls sendPost with text,url,(userId=null)', async () => {
+          await store.dispatch(writePost());
+
+          expect(sendPost).toHaveBeenCalledWith({ text: '개입니다', url: 'image-url', userId: null });
         });
       });
 
@@ -205,6 +266,9 @@ describe('postReducer', () => {
 
           store = mockStore({
             post: initialState,
+            user: {
+              user: mockUser,
+            },
           });
         });
 

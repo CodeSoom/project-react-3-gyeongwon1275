@@ -102,7 +102,7 @@ export const loadPost = (postId) => async (dispatch) => {
 };
 
 export const writePost = () => async (dispatch, getState) => {
-  const { post } = getState();
+  const { post, user } = getState();
 
   const { imageFile, text } = post;
 
@@ -117,10 +117,12 @@ export const writePost = () => async (dispatch, getState) => {
   const file = dataURLtoFile(readerResult, name);
   image.append('image', file);
 
+  const userId = user.user ? user.user.id : null;
+
   try {
     const { url } = await postImage(image);
 
-    await sendPost({ text, url });
+    await sendPost({ text, url, userId });
 
     dispatch(loadImages());
   } catch (error) {
