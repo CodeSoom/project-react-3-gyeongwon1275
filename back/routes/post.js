@@ -84,11 +84,12 @@ router.post('/:id/comment', async (request, response, next) => {
       return response.status(404).send('존재하지 않는 게시글입니다.');
     }
 
-    const { comment: content } = request.body
+    const { comment: content, userId } = request.body
 
     await Comment.create({
       content: content,
       postId: id,
+      userId: userId ? userId : null,
     })
 
     response.status(201).send('ok');
@@ -113,6 +114,7 @@ router.get('/:id/comments', async (request, response, next) => {
       where: {
         postId: id,
       },
+      include: [{ model: User, attributes: ['name'] }],
       limit: 10,
       order: [['created_at', 'DESC']],
     })
