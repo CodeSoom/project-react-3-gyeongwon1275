@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { render, screen } from '@testing-library/react';
 
-import { initialState } from '../../data/postReducer';
+import { initialState as postState } from '../../data/postReducer';
+import { initialState as userState } from '../../data/userReducer';
 
 import Header from '../../components/Header';
 import DefaultLayout from '../DefaultLayout';
@@ -17,7 +18,8 @@ describe('DefaultLayout', () => {
     dispatch.mockClear();
     useDispatch.mockImplementation(() => dispatch);
     useSelector.mockImplementation((selector) => selector({
-      post: initialState,
+      post: postState,
+      user: userState,
     }));
   });
 
@@ -26,6 +28,7 @@ describe('DefaultLayout', () => {
 
     expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'plus-circle' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
   });
 
   it('renders component received as prop', () => {

@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../Header';
 
-import { initialState } from '../../data/postReducer';
+import { initialState as postState } from '../../data/postReducer';
+import { initialState as userState } from '../../data/userReducer';
 
 describe('Header', () => {
   const dispatch = jest.fn();
@@ -15,7 +16,8 @@ describe('Header', () => {
     dispatch.mockClear();
     useDispatch.mockImplementation(() => dispatch);
     useSelector.mockImplementation((selector) => selector({
-      post: initialState,
+      post: postState,
+      user: userState,
     }));
   });
 
@@ -24,5 +26,11 @@ describe('Header', () => {
 
     expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'plus-circle' })).toBeInTheDocument();
+  });
+
+  it('renders Login Button', () => {
+    render(<Header />);
+
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
   });
 });
