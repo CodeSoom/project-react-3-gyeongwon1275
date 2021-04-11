@@ -454,6 +454,9 @@ describe('postReducer', () => {
               comment: '댓글!',
               commentBoxOpen: true,
             },
+            user: {
+              user: null,
+            },
           });
         });
 
@@ -463,6 +466,56 @@ describe('postReducer', () => {
 
           expect(actions[0]).toEqual(setComments([]));
           expect(actions[1]).toEqual(setComment(''));
+        });
+      });
+
+      context('with user ', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          sendComment.mockImplementationOnce(() => Promise.resolve());
+          getComments.mockImplementation(() => Promise.resolve([]));
+          store = mockStore({
+            post: {
+              post: null,
+              comment: '댓글!',
+              commentBoxOpen: true,
+            },
+            user: {
+              user: mockUser,
+            },
+          });
+        });
+
+        it('calls sendComment with postId,comment,userId', async () => {
+          await store.dispatch(writeComment(1));
+
+          expect(sendComment).toHaveBeenCalledWith({ comment: '댓글!', postId: 1, userId: 3 });
+        });
+      });
+
+      context('without user ', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          sendComment.mockImplementationOnce(() => Promise.resolve());
+          getComments.mockImplementation(() => Promise.resolve([]));
+          store = mockStore({
+            post: {
+              post: null,
+              comment: '댓글!',
+              commentBoxOpen: true,
+            },
+            user: {
+              user: null,
+            },
+          });
+        });
+
+        it('calls sendComment with postId,comment,(userId = null)', async () => {
+          await store.dispatch(writeComment(1));
+
+          expect(sendComment).toHaveBeenCalledWith({ comment: '댓글!', postId: 1, userId: null });
         });
       });
 
@@ -478,6 +531,9 @@ describe('postReducer', () => {
             post: {
               post: null,
               comment: '댓글!',
+            },
+            user: {
+              user: null,
             },
           });
         });

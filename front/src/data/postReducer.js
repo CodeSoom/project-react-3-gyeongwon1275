@@ -146,15 +146,17 @@ export const loadComments = (postId) => async (dispatch, getState) => {
 };
 
 export const writeComment = (postId) => async (dispatch, getState) => {
-  const { post } = getState();
+  const { post, user } = getState();
   const { comment } = post;
 
   if (!comment) {
     return;
   }
 
+  const userId = user.user ? user.user.id : null;
+
   try {
-    await sendComment({ postId, comment });
+    await sendComment({ postId, comment, userId });
     await dispatch(loadComments(postId));
     dispatch(setComment(''));
   } catch (error) {
