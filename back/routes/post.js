@@ -8,7 +8,7 @@ const multerS3 = require('multer-s3');
 
 const AWS = require('aws-sdk');
 
-const { Post, Image, Comment } = require('../models');
+const { Post, Image, Comment, User } = require('../models');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -38,11 +38,12 @@ router.post('/image', upload.array('image'), (request, response) => {
 });
 
 router.post('/', async (request, response, next) => {
-  const { text, url } = request.body;
+  const { text, url, userId } = request.body;
 
   try {
     const { id } = await Post.create({
       content: text,
+      userId: userId ? userId : null,
     });
 
     await Image.create({
@@ -62,7 +63,7 @@ router.get('/:id', async (request, response, next) => {
   try {
     const post = await Post.findOne({
       where: { id: id },
-      include: [{ model: Image }],
+      include: [{ model: Image }, { model: User, attributes: ['name'] }],
     });
 
     response.status(200).json(post);
