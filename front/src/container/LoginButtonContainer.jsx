@@ -18,4 +18,6 @@ export default function LoginButtonContainer() {
   if (!accessToken) {
     return <LoginButton onClick={handleClick} />;
   }
+
+  return <></>;
 }

@@ -50,4 +50,15 @@ describe('LoginButtonContainer', () => {
       expect(mockPush).toHaveBeenCalledWith('/login');
     });
   });
+
+  context('with accessToken', () => {
+    it('renders nothing', () => {
+      given('accessToken', () => '1234');
+
+      renderLoginButtonContainer();
+
+      const loginButton = screen.queryByRole('button', { name: 'Login' });
+      expect(loginButton).not.toBeInTheDocument();
+    });
+  });
 });
