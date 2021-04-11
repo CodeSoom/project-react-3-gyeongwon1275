@@ -41,6 +41,7 @@ describe('PostDetail', () => {
     ));
 
     expect(screen.getByText(content)).toBeInTheDocument();
+    expect(screen.getByText(mockPost.user.name)).toBeInTheDocument();
     expect(screen.getByText('3일 전')).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'post-image' })).toHaveAttribute('src', images[0].url);
 

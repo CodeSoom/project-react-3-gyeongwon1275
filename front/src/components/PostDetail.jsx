@@ -52,7 +52,9 @@ const CommentBox = styled.div({
 export default function PostDetail({
   post, commentBoxOpen, onClickCommentIcon, comment, comments, onChange, onSubmit,
 }) {
-  const { content, created_at: createdTime, images } = post;
+  const {
+    content, created_at: createdTime, images, user,
+  } = post;
 
   return (
     <PostWrapper>
@@ -68,7 +70,7 @@ export default function PostDetail({
           avatar={
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
           }
-          author="아무개"
+          author={user.name}
           content={content}
           datetime={getTimeDifferenceToNow(createdTime)}
         />
