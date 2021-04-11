@@ -9,7 +9,7 @@ export const postImage = async (image) => {
   return data;
 };
 
-export const sendPost = ({ text, url }) => http.post('/post', { text, url });
+export const sendPost = ({ text, url, userId }) => http.post('/post', { text, url, userId });
 
 export const getImages = async () => {
   const { data } = await http.get('/images');

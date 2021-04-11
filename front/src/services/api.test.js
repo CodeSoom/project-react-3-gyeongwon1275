@@ -48,7 +48,7 @@ describe('api', () => {
     });
 
     it('returns "ok" when request success', async () => {
-      const { data } = await sendPost({ text: 'dog', url: 'http://dog.com/dog1.gif' });
+      const { data } = await sendPost({ text: 'dog', url: 'http://dog.com/dog1.gif', userId: 3 });
 
       expect(data).toBe('ok');
     });
