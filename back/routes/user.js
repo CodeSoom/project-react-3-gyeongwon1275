@@ -73,14 +73,11 @@ router.get('/', authenticateJWT, async (request, response, next) => {
   try {
     const user = await User.findOne({
       where: { id: request.user.id },
-      attributes: {
-        include: ['id', 'name'],
-      },
+      attributes: ['id', 'name', 'profileUrl'],
     });
 
     if (user) {
-      const { id, name } = user;
-      return response.status(200).json({ id, name });
+      return response.status(200).json(user);
     } else {
       return response.status(404).send('존재하지 않는 회원입니다!');
     }
