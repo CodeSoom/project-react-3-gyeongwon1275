@@ -40,9 +40,13 @@ describe('PostDetail', () => {
       />
     ));
 
+    const { name, profileUrl } = mockPost.user;
+
     expect(screen.getByText(content)).toBeInTheDocument();
-    expect(screen.getByText(mockPost.user.name)).toBeInTheDocument();
+    expect(screen.getByText(name)).toBeInTheDocument();
     expect(screen.getByText('3일 전')).toBeInTheDocument();
+    expect(screen.getAllByRole('img')[0]).toHaveAttribute('src', profileUrl);
+
     expect(screen.getByRole('img', { name: 'post-image' })).toHaveAttribute('src', images[0].url);
 
     expect(screen.getByText('글을 게시하려면 Enter 키를 누르세요.')).toBeInTheDocument();

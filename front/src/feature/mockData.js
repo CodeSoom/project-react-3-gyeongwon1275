@@ -20,7 +20,10 @@ export const mockPost = {
       postId: 2,
     },
   ],
-  user: { name: '김붕어' },
+  user: {
+    name: '김붕어',
+    profileUrl: 'https://animalphy-image-bucket.s3.ap-northeast-2.amazonaws.com/user/1618141058248_%EA%B9%80%EA%B2%BD%EC%9B%90',
+  },
 };
 
 export const mockComment = {
