@@ -56,6 +56,8 @@ export default function PostDetail({
     content, created_at: createdTime, images, user,
   } = post;
 
+  const { name, profileUrl } = user;
+
   return (
     <PostWrapper>
       <StyledPost
@@ -65,12 +67,15 @@ export default function PostDetail({
           <CommentOutlined role="button" onClick={onClickCommentIcon} />,
         ]}
       >
-
         <Comment
-          avatar={
-            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          }
-          author={user.name}
+          avatar={(
+            <Avatar
+              shape="square"
+              src={profileUrl}
+              test
+            />
+          )}
+          author={name || '아무개'}
           content={content}
           datetime={getTimeDifferenceToNow(createdTime)}
         />
