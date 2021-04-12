@@ -29,6 +29,11 @@ module.exports = class User extends Model {
           allowNull: false,
           unique: true,
         },
+        profileUrl: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+          unique: false,
+        },
         created_at: {
           type: DataTypes.DATE,
           allowNull: false,
