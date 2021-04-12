@@ -10,10 +10,11 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const { authenticateJWT } = require('../middleWares/auth');
+const { getProfileImage } = require('../middleWares/getProfileImage');
 
-
-router.post('/signup', async (request, response, next) => {
+router.post('/signup', getProfileImage, async (request, response, next) => {
   const { userId: user_id, password, userName: name, email, phone } = request.body;
+  const profileUrl = request.profileUrl
 
   try {
     const isUserExisted = await User.findOne({ where: { user_id } });
@@ -30,6 +31,7 @@ router.post('/signup', async (request, response, next) => {
       name,
       email,
       phone,
+      profileUrl,
     });
 
     response.status(201).send('ok');
