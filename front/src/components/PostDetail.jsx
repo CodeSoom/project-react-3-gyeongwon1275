@@ -56,7 +56,7 @@ export default function PostDetail({
     content, created_at: createdTime, images, user,
   } = post;
 
-  const { name, profileUrl } = user;
+  const { name, profileUrl } = user || { name: '아무개', profileUrl: '' };
 
   return (
     <PostWrapper>
@@ -72,10 +72,9 @@ export default function PostDetail({
             <Avatar
               shape="square"
               src={profileUrl}
-              test
             />
           )}
-          author={name || '아무개'}
+          author={name}
           content={content}
           datetime={getTimeDifferenceToNow(createdTime)}
         />
