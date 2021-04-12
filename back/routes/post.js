@@ -87,7 +87,7 @@ router.get('/:id/comments', async (request, response, next) => {
       where: {
         postId: id,
       },
-      include: [{ model: User, attributes: ['name'] }],
+      include: [{ model: User, attributes: ['name', 'profileUrl'] }],
       limit: 10,
       order: [['created_at', 'DESC']],
     })
