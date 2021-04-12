@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import LoginButton from '../components/LoginButton';
+import ProfileButton from '../components/ProfileButton';
 
 export default function LoginButtonContainer() {
-  const { accessToken } = useSelector((state) => state.user);
+  const { accessToken, user } = useSelector((state) => state.user);
 
   const history = useHistory();
 
@@ -19,5 +20,5 @@ export default function LoginButtonContainer() {
     return <LoginButton onClick={handleClick} />;
   }
 
-  return <></>;
+  return <ProfileButton user={user} />;
 }
