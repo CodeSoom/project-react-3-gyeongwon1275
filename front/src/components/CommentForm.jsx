@@ -33,10 +33,15 @@ const CommentInputWrapper = styled.div({
   height: 'auto',
 
   marginBottom: '0.5rem',
+
+  '& > div': {
+    marginTop: '5px',
+    marginLeft: '5px',
+  },
 });
 
 const CommentInputLabel = styled.label({
-  display: 'hidden',
+  display: 'none',
 });
 
 export default function CommentForm({
