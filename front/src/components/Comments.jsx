@@ -19,9 +19,13 @@ export default function Comments({ comments }) {
       }) => (
         <li key={id}>
           <Comment
-            avatar={
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-            }
+            avatar={(
+              <Avatar
+                src={user ? user.profileUrl : ''}
+                shape="square"
+                alt="comment-author-profile"
+              />
+            )}
             author={user ? user.name : '아무개'}
             content={content}
             datetime={getTimeDifferenceToNow(createdTime)}

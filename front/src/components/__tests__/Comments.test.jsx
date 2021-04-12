@@ -22,7 +22,7 @@ describe('Comments', () => {
   });
 
   context('with user', () => {
-    it('render user name for comment author', () => {
+    it('render comment author name, profile image', () => {
       render((
         <Comments
           comments={[{
@@ -36,6 +36,7 @@ describe('Comments', () => {
         />));
 
       expect(screen.getByText(mockUser.name)).toBeInTheDocument();
+      expect(screen.getByRole('img')).toHaveAttribute('src', mockUser.profileUrl);
     });
   });
 
@@ -54,6 +55,7 @@ describe('Comments', () => {
         />));
 
       expect(screen.getByText('아무개')).toBeInTheDocument();
+      expect(screen.getByRole('img')).toHaveAttribute('src', '');
     });
   });
 
