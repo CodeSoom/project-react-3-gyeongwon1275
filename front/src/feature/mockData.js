@@ -32,6 +32,7 @@ export const mockComment = {
   created_at: '2021-03-29T08:34:00.000Z',
   userId: 4,
   postId: 6,
+
 };
 
 export const mockSignUpFormValues = {
@@ -54,4 +55,5 @@ export const mockUser = {
   name: '김붕어',
   phone: '01086901275',
   created_at: '2021-03-29T08:34:00.000Z',
+  profileUrl: 'https://animalphy-image-bucket.s3.ap-northeast-2.amazonaws.com/user/1618141058248_%EA%B9%80%EA%B2%BD%EC%9B%90',
 };
