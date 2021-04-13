@@ -12,7 +12,7 @@ const PostImage = styled.img({
 
   '@media (min-width: 768px)': {
     width: 'auto',
-    height: '150px',
+    height: '300px',
 
     margin: '5px',
   },
