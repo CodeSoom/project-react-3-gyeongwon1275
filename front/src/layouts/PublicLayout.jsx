@@ -15,7 +15,7 @@ const FormWrapper = styled.div({
     justifyContent: 'center',
     alignItems: 'center',
 
-    width: '25%',
+    width: '25vw',
   },
 
 });
