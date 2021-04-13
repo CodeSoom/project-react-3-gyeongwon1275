@@ -17,7 +17,6 @@ describe('CommentForm', () => {
     setMatchMediaMock();
     render((
       <CommentForm
-        commentBoxOpen
         comment="test"
         onChange={onChange}
         onSubmit={onSubmit}

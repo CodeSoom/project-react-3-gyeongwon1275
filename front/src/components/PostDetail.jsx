@@ -15,8 +15,7 @@ import styled from '@emotion/styled';
 
 import { getTimeDifferenceToNow } from '../utils';
 
-import CommentForm from './CommentForm';
-import Comments from './Comments';
+import CommentBox from './CommentBox';
 
 const PostWrapper = styled.div({
   margin: '1rem auto',
@@ -41,22 +40,6 @@ const PostDetailImage = styled.img({
   padding: '0.5rem 0',
 
   width: '100%',
-});
-
-const CommentBox = styled.div({
-  padding: '0 1.5rem',
-
-  width: '100%',
-  height: '15vh',
-
-  background: '#141414',
-  border: '1px solid #303030',
-
-  overflowY: 'auto',
-
-  '@media (min-width: 768px)': {
-    height: '25vh',
-  },
 });
 
 export default function PostDetail({
@@ -94,15 +77,13 @@ export default function PostDetail({
           </li>
         ))}
       </PostBox>
-      <CommentBox>
-        <Comments comments={comments} />
-        <CommentForm
-          commentBoxOpen={commentBoxOpen}
-          comment={comment}
-          onChange={onChange}
-          onSubmit={onSubmit}
-        />
-      </CommentBox>
+      <CommentBox
+        commentBoxOpen={commentBoxOpen}
+        comment={comment}
+        comments={comments}
+        onChange={onChange}
+        onSubmit={onSubmit}
+      />
     </PostWrapper>
   );
 }

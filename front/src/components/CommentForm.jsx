@@ -45,16 +45,12 @@ const CommentInputLabel = styled.label({
 });
 
 export default function CommentForm({
-  commentBoxOpen, comment, onChange, onSubmit,
+  comment, onChange, onSubmit,
 }) {
-  if (!commentBoxOpen) {
-    return <></>;
-  }
-
   return (
     <CommentDialogWrapper>
       <ProfileWrapper>
-        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        <Avatar src="" />
       </ProfileWrapper>
       <CommentFormWrapper
         role="form"
