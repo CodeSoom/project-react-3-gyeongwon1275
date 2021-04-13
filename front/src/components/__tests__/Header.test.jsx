@@ -25,7 +25,8 @@ describe('Header', () => {
     render(<Header />);
 
     expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'plus-circle' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'upload' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'plus' })).toBeInTheDocument();
   });
 
   it('renders Login Button', () => {
