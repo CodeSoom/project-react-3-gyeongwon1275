@@ -21,15 +21,22 @@ import Comments from './Comments';
 const PostWrapper = styled.div({
   margin: '1rem auto',
 
-  width: '40vw',
-  height: '50vh',
+  width: '100vw',
+  height: 'auto',
+
+  overflow: 'visible',
+
+  '@media (min-width: 768px)': {
+    width: '33vw',
+    height: 'auto',
+  },
 });
 
-const StyledPost = styled(Card)({
+const PostBox = styled(Card)({
   width: '100%',
 });
 
-const StyledImage = styled.img({
+const PostDetailImage = styled.img({
 
   padding: '0.5rem 0',
 
@@ -40,13 +47,16 @@ const CommentBox = styled.div({
   padding: '0 1.5rem',
 
   width: '100%',
-  height: '25%',
+  height: '15vh',
 
   background: '#141414',
   border: '1px solid #303030',
 
   overflowY: 'auto',
 
+  '@media (min-width: 768px)': {
+    height: '25vh',
+  },
 });
 
 export default function PostDetail({
@@ -60,7 +70,7 @@ export default function PostDetail({
 
   return (
     <PostWrapper>
-      <StyledPost
+      <PostBox
         actions={[
           <LikeOutlined role="button" />,
           <DislikeOutlined role="button" />,
@@ -80,10 +90,10 @@ export default function PostDetail({
         />
         {images.map(({ url, id }) => (
           <li key={id}>
-            <StyledImage src={url} alt="post-image" />
+            <PostDetailImage src={url} alt="post-image" />
           </li>
         ))}
-      </StyledPost>
+      </PostBox>
       <CommentBox>
         <Comments comments={comments} />
         <CommentForm
