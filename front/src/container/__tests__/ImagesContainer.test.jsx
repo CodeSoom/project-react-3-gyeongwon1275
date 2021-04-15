@@ -11,6 +11,7 @@ import { MemoryRouter } from 'react-router-dom';
 import ImagesContainer from '../ImagesContainer';
 
 import { mockImages } from '../../feature/mockData';
+import { setViewMoreButtonVisible } from '../../data/postReducer';
 
 const mockPush = jest.fn();
 
@@ -23,14 +24,20 @@ jest.mock('react-router-dom', () => ({
 
 describe('ImagesContainer', () => {
   const dispatch = jest.fn();
+  const onScroll = jest.fn();
+  const addEventListener = jest.spyOn(document, 'addEventListener');
 
   beforeEach(() => {
     dispatch.mockClear();
+    addEventListener.mockClear();
+    onScroll.mockClear();
+
     useDispatch.mockImplementation(() => dispatch);
 
     useSelector.mockImplementation((selector) => selector({
       post: {
         images: given.images,
+        viewMoreButtonVisible: given.viewMoreButtonVisible,
       },
     }));
   });
@@ -67,6 +74,33 @@ describe('ImagesContainer', () => {
       fireEvent.click(screen.getByRole('img'));
 
       expect(mockPush).toBeCalledWith('post/1');
+    });
+  });
+
+  context('when element has totally scrolled without viewMoreButtonVisible', () => {
+    it('shows "더보기" button', async () => {
+      given('images', () => mockImages);
+      given('viewMoreButtonVisible', () => false);
+
+      renderImageContainer();
+
+      expect(addEventListener).toHaveBeenCalled();
+    });
+  });
+
+  context('when clicked "더보기" button with viewMoreButtonVisible', () => {
+    it('updates image list', () => {
+      given('images', () => mockImages);
+      given('viewMoreButtonVisible', () => true);
+
+      renderImageContainer();
+
+      const button = screen.getByRole('button', { name: '더보기' });
+
+      fireEvent.click(button);
+
+      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenCalledWith(setViewMoreButtonVisible(false));
     });
   });
 });
