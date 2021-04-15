@@ -11,8 +11,8 @@ export const postImage = async (image) => {
 
 export const sendPost = ({ text, url, userId }) => http.post('/post', { text, url, userId });
 
-export const getImages = async () => {
-  const { data } = await http.get('/images');
+export const getImages = async (lastId = 0) => {
+  const { data } = await http.get(`/images?lastId=${lastId}`);
   return data;
 };
 
