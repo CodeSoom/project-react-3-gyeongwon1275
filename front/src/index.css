@@ -20,13 +20,14 @@ body {
   height: 100%;
   
   color: white;
-  background-color: #000;
+  background-color: #121212;;
 
   overflow-y: scroll;
 }
 
 #app {
   margin: 0px auto;
+  height: 100%;
 }
 
 @media screen and (min-width: 768px) {
