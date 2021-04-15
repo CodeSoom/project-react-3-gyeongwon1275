@@ -13,4 +13,7 @@ module.exports = {
     },
   },
   verbose: true,
+  moduleNameMapper: {
+    '\\.(svg)$': '<rootDir>/__mocks__/svgMock.jsx',
+  },
 };
