@@ -10,6 +10,7 @@ import { setFormVisible } from '../data/postReducer';
 
 import PostFormContainer from '../container/PostFormContainer';
 import LoginButtonContainer from '../container/LoginButtonContainer';
+import Logo from './Logo';
 
 const DesktopUploadButton = styled.button({
   '@media (max-width: 768px)': {
@@ -68,9 +69,6 @@ const HeaderWrapper = styled.div({
 
 const LogoWrapper = styled.div({
 
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -83,7 +81,6 @@ const LogoWrapper = styled.div({
     flex: '7 7 auto',
   },
 });
-
 const UploadButtonWrapper = styled.div({
 
   display: 'flex',
@@ -106,7 +103,9 @@ export default function Header() {
 
   return (
     <HeaderWrapper>
-      <LogoWrapper>AnimalPhy</LogoWrapper>
+      <LogoWrapper>
+        <Logo />
+      </LogoWrapper>
       <UploadButtonWrapper>
         <DesktopUploadButton type="button" onClick={openPostForm}>
           <UploadIcon />
