@@ -6,17 +6,25 @@ import styled from '@emotion/styled';
 
 import Logo from './Logo';
 
-const StyledInput = styled(Input)({
+const SignUpFormBox = styled.form({
+  marginTop: '20px',
+
+  '@media (min-width: 768px)': {
+    marginTop: '30px',
+  },
+});
+
+const SignUpInput = styled(Input)({
   margin: '0.5rem 0 ',
   height: '45px',
 });
 
-const StyledInputPassword = styled(Input.Password)({
+const SignUpInputPassword = styled(Input.Password)({
   margin: '0.5rem 0 ',
   height: '45px',
 });
 
-const StyledButton = styled(Button)({
+const SignUpSubmitButton = styled(Button)({
   margin: '0.5rem 0 ',
 
   width: '100%',
@@ -42,7 +50,7 @@ const LoginLink = styled.a({
   },
 });
 
-const HiddenLabel = styled.label({
+const Label = styled.label({
   display: 'none',
 });
 
@@ -59,13 +67,13 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
   return (
     <>
       <Logo />
-      <form
+      <SignUpFormBox
         onSubmit={onSubmit}
       >
-        <HiddenLabel htmlFor="userId">
+        <Label htmlFor="userId">
           아이디
-        </HiddenLabel>
-        <StyledInput
+        </Label>
+        <SignUpInput
           placeholder="아이디"
           id="userId"
           name="userId"
@@ -74,10 +82,10 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={userId}
         />
-        <HiddenLabel htmlFor="password">
+        <Label htmlFor="password">
           비밀번호
-        </HiddenLabel>
-        <StyledInputPassword
+        </Label>
+        <SignUpInputPassword
           placeholder="비밀번호"
           id="password"
           name="password"
@@ -86,10 +94,10 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={password}
         />
-        <HiddenLabel htmlFor="passwordConfirm">
+        <Label htmlFor="passwordConfirm">
           비밀번호 확인
-        </HiddenLabel>
-        <StyledInputPassword
+        </Label>
+        <SignUpInputPassword
           placeholder="비밀번호 확인"
           id="passwordConfirm"
           name="passwordConfirm"
@@ -98,10 +106,10 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={passwordConfirm}
         />
-        <HiddenLabel htmlFor="userName">
+        <Label htmlFor="userName">
           이름
-        </HiddenLabel>
-        <StyledInput
+        </Label>
+        <SignUpInput
           placeholder="이름"
           id="userName"
           name="userName"
@@ -110,10 +118,10 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={userName}
         />
-        <HiddenLabel htmlFor="email">
+        <Label htmlFor="email">
           이메일
-        </HiddenLabel>
-        <StyledInput
+        </Label>
+        <SignUpInput
           placeholder="이메일"
           id="email"
           name="email"
@@ -122,10 +130,10 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={email}
         />
-        <HiddenLabel htmlFor="phone">
+        <Label htmlFor="phone">
           연락처
-        </HiddenLabel>
-        <StyledInput
+        </Label>
+        <SignUpInput
           placeholder="연락처"
           id="phone"
           name="phone"
@@ -134,15 +142,15 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={phone}
         />
-        <StyledButton
+        <SignUpSubmitButton
           type="primary"
           htmlType="submit"
           size="large"
           onSubmit={onSubmit}
         >
           회원가입
-        </StyledButton>
-      </form>
+        </SignUpSubmitButton>
+      </SignUpFormBox>
 
       <LoginLinkWrapper>
         <p>이미 회원이세요?</p>
