@@ -6,24 +6,32 @@ import styled from '@emotion/styled';
 
 import Logo from './Logo';
 
-const StyledInput = styled(Input)({
+const LoginFormBox = styled.form({
+  marginTop: '20px',
+
+  '@media (min-width: 768px)': {
+    marginTop: '30px',
+  },
+});
+
+const LoginInput = styled(Input)({
   margin: '0.5rem 0 ',
   height: '45px',
 });
 
-const StyledInputPassword = styled(Input.Password)({
+const LoginInputPassword = styled(Input.Password)({
   margin: '0.5rem 0 ',
   height: '45px',
 });
 
-const StyledButton = styled(Button)({
+const LoginSubmitButton = styled(Button)({
   margin: '0.5rem 0 ',
 
   width: '100%',
   height: '45px',
 });
 
-const StyledLinkWrapper = styled.div({
+const SignUpLinkWrapper = styled.div({
   margin: '0.5rem 0 ',
 
   display: 'flex',
@@ -32,7 +40,7 @@ const StyledLinkWrapper = styled.div({
   width: '100%',
 });
 
-const StyledLink = styled.a({
+const SignUpLink = styled.a({
   marginLeft: '1rem',
   color: '#1890ff',
   fontWeight: 'bold',
@@ -42,7 +50,7 @@ const StyledLink = styled.a({
   },
 });
 
-const HiddenLabel = styled.label({
+const Label = styled.label({
   display: 'none',
 });
 
@@ -55,13 +63,13 @@ export default function LoginForm({ formValues, onChange, onSubmit }) {
   return (
     <>
       <Logo />
-      <form
+      <LoginFormBox
         onSubmit={onSubmit}
       >
-        <HiddenLabel htmlFor="userId">
+        <Label htmlFor="userId">
           아이디
-        </HiddenLabel>
-        <StyledInput
+        </Label>
+        <LoginInput
           placeholder="아이디"
           id="userId"
           name="userId"
@@ -70,10 +78,10 @@ export default function LoginForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={userId}
         />
-        <HiddenLabel htmlFor="password">
+        <Label htmlFor="password">
           비밀번호
-        </HiddenLabel>
-        <StyledInputPassword
+        </Label>
+        <LoginInputPassword
           placeholder="비밀번호"
           id="password"
           name="password"
@@ -82,19 +90,19 @@ export default function LoginForm({ formValues, onChange, onSubmit }) {
           onChange={onChange}
           value={password}
         />
-        <StyledButton
+        <LoginSubmitButton
           type="primary"
           htmlType="submit"
           size="large"
           onSubmit={onSubmit}
         >
           로그인
-        </StyledButton>
-      </form>
-      <StyledLinkWrapper>
+        </LoginSubmitButton>
+      </LoginFormBox>
+      <SignUpLinkWrapper>
         <p>계정이 없나요?</p>
-        <StyledLink href="/signup">회원가입</StyledLink>
-      </StyledLinkWrapper>
+        <SignUpLink href="/signup">회원가입</SignUpLink>
+      </SignUpLinkWrapper>
     </>
   );
 }

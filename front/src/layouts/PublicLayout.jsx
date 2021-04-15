@@ -7,13 +7,13 @@ const FormWrapper = styled.div({
   width: '100%',
   height: '100%',
 
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+
   '@media (min-width: 768px)': {
     margin: '0 auto',
-
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
 
     width: '25vw',
   },
