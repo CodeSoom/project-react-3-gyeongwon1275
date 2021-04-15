@@ -11,7 +11,9 @@ import postReducer,
   writePost,
   setPostReset,
   loadImages,
+  loadImagesMore,
   setImages,
+  addImages,
   setPost,
   loadPost,
   setCommentBoxOpen,
@@ -20,6 +22,7 @@ import postReducer,
   writeComment,
   loadComments,
   setPostDetailReset,
+  setViewMoreButtonVisible,
 } from '../postReducer';
 
 import {
@@ -32,7 +35,9 @@ import {
 } from '../../services/api';
 
 import { dataURLtoFile } from '../../utils/index';
-import { mockComment, mockPost, mockUser } from '../../feature/mockData';
+import {
+  mockComment, mockImages, mockPost, mockUser,
+} from '../../feature/mockData';
 
 jest.mock('../../services/api');
 jest.mock('../../utils');
@@ -159,6 +164,16 @@ describe('postReducer', () => {
         const state = postReducer(initialState, setComments([mockComment]));
 
         expect(state.comments[0]).toMatchObject(mockComment);
+      });
+    });
+
+    describe('setViewMoreButtonVisible', () => {
+      it('changes viewMoreButtonVisible', () => {
+        const initialState = { viewMoreButtonVisible: true };
+
+        const state = postReducer(initialState, setViewMoreButtonVisible(false));
+
+        expect(state.viewMoreButtonVisible).toBe(false);
       });
     });
 
@@ -320,6 +335,58 @@ describe('postReducer', () => {
 
         it('runs setError', async () => {
           await store.dispatch(loadImages());
+
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(setError('error'));
+        });
+      });
+    });
+
+    describe('loadImagesMore', () => {
+      context('when error not occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          getImages.mockImplementationOnce(() => Promise.resolve(mockImages));
+
+          store = mockStore({
+            post: {
+              images: [],
+            },
+          });
+        });
+
+        it('runs addImages', async () => {
+          await store.dispatch(loadImagesMore());
+          const actions = store.getActions();
+
+          expect(actions[0]).toEqual(addImages(mockImages));
+        });
+
+        it('calls getImages with lastId', async () => {
+          await store.dispatch(loadImagesMore(5));
+
+          expect(getImages).toHaveBeenCalledWith(5);
+        });
+      });
+
+      context('when error occurred', () => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+
+          const mockError = { message: 'error' };
+          getImages.mockImplementationOnce(() => Promise.reject(mockError));
+
+          store = mockStore({
+            post: {
+              images: [],
+            },
+          });
+        });
+
+        it('runs setError', async () => {
+          await store.dispatch(loadImagesMore());
 
           const actions = store.getActions();
 

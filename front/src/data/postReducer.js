@@ -22,6 +22,7 @@ export const initialState = {
   commentBoxOpen: false,
   comment: '',
   comments: [],
+  viewMoreButtonVisible: true,
 };
 
 const { actions, reducer } = createSlice({
@@ -44,6 +45,9 @@ const { actions, reducer } = createSlice({
     setImages(state, { payload: images }) {
       state.images = images;
     },
+    addImages(state, { payload: images }) {
+      state.images = state.images.concat(images);
+    },
     setCommentBoxOpen(state) {
       state.commentBoxOpen = !state.commentBoxOpen;
     },
@@ -62,6 +66,9 @@ const { actions, reducer } = createSlice({
       state.comment = '';
       state.comments = [];
     },
+    setViewMoreButtonVisible(state, { payload: isButtonVisible }) {
+      state.viewMoreButtonVisible = isButtonVisible;
+    },
     setError(state, { payload: error }) {
       state.error = error;
     },
@@ -78,15 +85,26 @@ export const {
   setPost,
   setPostDetailReset,
   setImages,
+  addImages,
   setCommentBoxOpen,
   setComment,
   setComments,
+  setViewMoreButtonVisible,
 } = actions;
 
 export const loadImages = () => async (dispatch) => {
   try {
     const images = await getImages();
     dispatch(setImages(images));
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
+export const loadImagesMore = (lastId) => async (dispatch) => {
+  try {
+    const images = await getImages(lastId);
+    dispatch(addImages(images));
   } catch (error) {
     dispatch(setError(error.message));
   }
