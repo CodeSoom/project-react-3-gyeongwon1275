@@ -4,6 +4,8 @@ import { Button, Input } from 'antd';
 
 import styled from '@emotion/styled';
 
+import Logo from './Logo';
+
 const StyledInput = styled(Input)({
   margin: '0.5rem 0 ',
   height: '45px',
@@ -56,6 +58,7 @@ function SignUpForm({ formValues, onChange, onSubmit }) {
 
   return (
     <>
+      <Logo />
       <form
         onSubmit={onSubmit}
       >
