@@ -60,7 +60,7 @@ describe('api', () => {
     });
 
     it('returns images when request success', async () => {
-      const { images } = await getImages();
+      const { images } = await getImages(3);
 
       expect(images[0]).toMatchObject(mockImages[0]);
     });
