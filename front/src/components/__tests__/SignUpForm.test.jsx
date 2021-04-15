@@ -17,7 +17,7 @@ describe('SignUpForm', () => {
     phone: '01012345678',
   };
 
-  it('renders sign up form', () => {
+  it('renders sign up form, Logo and listens change,submit event', () => {
     render((
       <SignUpForm
         formValues={values}
@@ -25,6 +25,8 @@ describe('SignUpForm', () => {
         onSubmit={onSubmit}
       />
     ));
+
+    expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
 
     const inputs = [
       { label: '아이디', originValue: values.userId, valueToChange: 'rud285' },
