@@ -14,7 +14,7 @@ describe('LoginForm', () => {
 
   };
 
-  it('renders login form and listens change,submit event', () => {
+  it('renders login form, Logo and listens change,submit event', () => {
     render((
       <LoginForm
         formValues={values}
@@ -22,6 +22,8 @@ describe('LoginForm', () => {
         onSubmit={onSubmit}
       />
     ));
+
+    expect(screen.getByText('AnimalPhy')).toBeInTheDocument();
 
     const inputs = [
       { label: '아이디', originValue: values.userId, valueToChange: 'rud285' },
