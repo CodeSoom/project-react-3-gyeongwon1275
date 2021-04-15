@@ -22,6 +22,10 @@ module.exports = (env) => ({
         test: /\.less$/i,
         loader: 'less-loader',
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
   devServer: {
