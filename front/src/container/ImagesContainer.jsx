@@ -26,7 +26,7 @@ const ImageWrapper = styled.ul({
     display: 'flex',
 
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
   },
