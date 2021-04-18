@@ -12,7 +12,7 @@ import {
 export default function PostFormContainer() {
   const dispatch = useDispatch();
 
-  const { formVisible, imageFile: { readerResult } } = useSelector((state) => state.post);
+  const { formVisible, imageFile: { readerResult }, text } = useSelector((state) => state.post);
 
   const onClose = () => {
     dispatch(setPostReset());
@@ -29,8 +29,8 @@ export default function PostFormContainer() {
     reader.readAsDataURL(file);
   };
 
-  const onChangeText = (text) => {
-    dispatch(setPostText(text));
+  const onChangeText = (postText) => {
+    dispatch(setPostText(postText));
   };
 
   const onClick = () => {
@@ -44,6 +44,7 @@ export default function PostFormContainer() {
       onChangeImage={onChangeImage}
       onChangeText={onChangeText}
       onClick={onClick}
+      text={text}
       image={readerResult}
       formVisible={formVisible}
     />

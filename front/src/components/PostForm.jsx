@@ -46,6 +46,7 @@ function PostForm({
   onChangeImage,
   onChangeText,
   onClick,
+  text,
   image,
   formVisible,
 }) {
@@ -75,6 +76,7 @@ function PostForm({
         onChange={(event) => {
           onChangeText(event.target.value);
         }}
+        value={text}
       />
       <ImageWrapper src={image} />
       <IconContainer>
