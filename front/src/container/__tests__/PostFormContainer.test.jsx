@@ -29,7 +29,7 @@ describe('PostFormContainer', () => {
       post: {
         formVisible: given.formVisible,
         imageFile: { readerResult: '', name: '' },
-        text: '',
+        text: '개사진입니다.',
         error: '',
         posts: [],
       },
@@ -43,6 +43,7 @@ describe('PostFormContainer', () => {
       render(<PostFormContainer />);
 
       expect(screen.getByRole('heading', { name: '짤 올리기' })).toBeInTheDocument();
+      expect(screen.getByRole('textbox').value).toBe('개사진입니다.');
     });
   });
 
