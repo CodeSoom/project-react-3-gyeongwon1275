@@ -11,10 +11,9 @@ const PostImage = styled.img({
   cursor: 'pointer',
 
   '@media (min-width: 768px)': {
-    width: 'auto',
-    height: '300px',
+    width: '13.5vw',
+    height: '13.5vw',
 
-    margin: '5px',
   },
 });
 
