@@ -11,15 +11,20 @@ import userReducer,
   setSignUpSucceded,
   signUp,
   loadUser,
+  loadNonMember,
+  setNonMember,
 } from '../userReducer';
 
 import {
+  getNonMember,
   getUser,
   postLogin,
   postSignUp,
 } from '../../services/api';
 
-import { mockLoginFormValues, mockSignUpFormValues } from '../../feature/mockData';
+import {
+  mockLoginFormValues, mockNonMember, mockSignUpFormValues, mockUser,
+} from '../../feature/mockData';
 
 jest.mock('../../services/api');
 
@@ -148,12 +153,102 @@ describe('userReducer', () => {
         getUser.mockImplementationOnce(() => Promise.reject(mockError));
 
         store = mockStore({
-          user: initialState,
+          user: {
+            nonMember: initialState,
+          },
         });
       });
 
       it('runs setError', async () => {
         await store.dispatch(loadUser('1234'));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setError('error'));
+      });
+    });
+  });
+
+  describe('loadNonMember', () => {
+    const initialState = {
+      nonMember: null,
+    };
+
+    context('with user', () => {
+      beforeEach(() => {
+        getNonMember.mockClear();
+        getNonMember.mockImplementation(() => Promise.resolve(mockNonMember));
+
+        store = mockStore({
+          user: {
+            user: mockUser,
+          },
+        });
+      });
+
+      it('doesn`t run actions', async () => {
+        await store.dispatch(loadNonMember());
+
+        const actions = store.getActions();
+
+        expect(actions).toHaveLength(0);
+      });
+    });
+
+    context('with nonMember', () => {
+      beforeEach(() => {
+        getNonMember.mockClear();
+        getNonMember.mockImplementation(() => Promise.resolve(mockNonMember));
+
+        store = mockStore({
+          user: {
+            nonMember: mockNonMember,
+          },
+        });
+      });
+
+      it('doesn`t run actions', async () => {
+        await store.dispatch(loadNonMember());
+
+        const actions = store.getActions();
+
+        expect(actions).toHaveLength(0);
+      });
+    });
+
+    context('when error not occurred', () => {
+      beforeEach(() => {
+        getNonMember.mockClear();
+        getNonMember.mockImplementation(() => Promise.resolve(mockNonMember));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setNonMember', async () => {
+        await store.dispatch(loadNonMember());
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setNonMember(mockNonMember));
+      });
+    });
+
+    context('when error occurred', () => {
+      beforeEach(() => {
+        getNonMember.mockClear();
+
+        const mockError = { message: 'error' };
+        getNonMember.mockImplementation(() => Promise.reject(mockError));
+
+        store = mockStore({
+          user: initialState,
+        });
+      });
+
+      it('runs setError', async () => {
+        await store.dispatch(loadNonMember());
 
         const actions = store.getActions();
 
@@ -180,13 +275,14 @@ describe('userReducer', () => {
         });
       });
 
-      it('runs setAccessToken, setUser', async () => {
+      it('runs setAccessToken, setNonMember,setUser', async () => {
         await store.dispatch(login(mockLoginFormValues));
 
         const actions = store.getActions();
 
         expect(actions[0]).toEqual(setAccessToken('1234'));
-        expect(actions[1]).toEqual(setUser({}));
+        expect(actions[1]).toEqual(setNonMember(null));
+        expect(actions[2]).toEqual(setUser({}));
       });
     });
 

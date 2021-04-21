@@ -4,12 +4,14 @@ import {
   postSignUp,
   postLogin,
   getUser,
+  getNonMember,
 } from '../services/api';
 
 export const initialState = {
   signUpSucceded: false,
   accessToken: '',
   user: null,
+  nonMember: null,
   error: '',
 };
 
@@ -26,6 +28,9 @@ const { actions, reducer } = createSlice({
     setUser(state, { payload: user }) {
       state.user = user;
     },
+    setNonMember(state, { payload: nonMember }) {
+      state.nonMember = nonMember;
+    },
     setError(state, { payload: error }) {
       state.error = error;
     },
@@ -37,6 +42,7 @@ export const {
   setSignUpSucceded,
   setAccessToken,
   setUser,
+  setNonMember,
 } = actions;
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -59,11 +65,27 @@ export const loadUser = (accessToken) => async (dispatch) => {
   }
 };
 
+export const loadNonMember = () => async (dispatch, getState) => {
+  try {
+    const { user } = getState();
+
+    if (user.user) return;
+    if (user.nonMember) return;
+
+    const nonMember = await getNonMember();
+
+    dispatch(setNonMember(nonMember));
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+
 export const login = (formValues) => async (dispatch) => {
   try {
     const { accessToken } = await postLogin(formValues);
 
     dispatch(setAccessToken(accessToken));
+    dispatch(setNonMember(null));
     await dispatch(loadUser(accessToken));
   } catch (error) {
     dispatch(setError(error.message));

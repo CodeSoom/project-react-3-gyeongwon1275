@@ -10,6 +10,7 @@ import {
   sendComment,
   sendPost,
   getUser,
+  getNonMember,
 } from './api';
 
 import {
@@ -135,6 +136,18 @@ describe('api', () => {
       const user = await getUser('1234');
 
       expect(user).toEqual({});
+    });
+  });
+
+  describe('getNonMember', () => {
+    beforeEach(() => {
+      http.get.mockImplementationOnce(() => Promise.resolve({ data: { } }));
+    });
+
+    it('returns non member info when request success', async () => {
+      const nonMember = await getNonMember();
+
+      expect(nonMember).toEqual({});
     });
   });
 });

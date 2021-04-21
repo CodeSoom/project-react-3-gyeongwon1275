@@ -57,3 +57,8 @@ export const mockUser = {
   created_at: '2021-03-29T08:34:00.000Z',
   profileUrl: 'https://animalphy-image-bucket.s3.ap-northeast-2.amazonaws.com/user/1618141058248_%EA%B9%80%EA%B2%BD%EC%9B%90',
 };
+export const mockNonMember = {
+  id: 5,
+  name: '🐧 나무발발이',
+  profileUrl: 'https://animalphy-image-bucket.s3.ap-northeast-2.amazonaws.com/userProfile/1618733829117_%F0%9F%90%A7%20%EB%82%98%EB%AC%B4%EB%B0%9C%EB%B0%9C%EC%9D%B4',
+};

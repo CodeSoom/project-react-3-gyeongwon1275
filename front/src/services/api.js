@@ -43,3 +43,9 @@ export const getUser = async (accessToken) => {
 
   return data;
 };
+
+export const getNonMember = async () => {
+  const { data } = await http.get('/non-member');
+
+  return data;
+};
