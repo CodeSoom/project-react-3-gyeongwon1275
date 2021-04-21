@@ -15,3 +15,5 @@ export const postSignUp = jest.fn();
 export const postLogin = jest.fn();
 
 export const getUser = jest.fn();
+
+export const getNonMember = jest.fn();
