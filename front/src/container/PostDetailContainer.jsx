@@ -20,6 +20,8 @@ export default function PostDetailContainer({ postId }) {
     post, commentBoxOpen, comment, comments,
   } = useSelector((state) => state.post);
 
+  const { user, nonMember } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(loadPost(postId));
     return () => {
@@ -48,9 +50,11 @@ export default function PostDetailContainer({ postId }) {
     <PostDetail
       post={post}
       commentBoxOpen={commentBoxOpen}
-      onClickCommentIcon={handleCommentBox}
+      user={user}
+      nonMember={nonMember}
       comment={comment}
       comments={comments}
+      onClickCommentIcon={handleCommentBox}
       onChange={handleCommentChange}
       onSubmit={handleCommentSubmit}
     />

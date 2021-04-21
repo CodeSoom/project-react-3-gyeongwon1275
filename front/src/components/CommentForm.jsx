@@ -45,12 +45,17 @@ const CommentInputLabel = styled.label({
 });
 
 export default function CommentForm({
-  comment, onChange, onSubmit,
+  comment, profileUrl, onChange, onSubmit,
 }) {
   return (
     <CommentDialogWrapper>
       <ProfileWrapper>
-        <Avatar src="" />
+        <Avatar
+          shape="square"
+          src={profileUrl || ''}
+          alt="comment-form-profile"
+        />
+
       </ProfileWrapper>
       <CommentFormWrapper
         role="form"

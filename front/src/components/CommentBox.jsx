@@ -21,7 +21,7 @@ const CommentWrapper = styled.div({
 });
 
 export default function CommentBox({
-  commentBoxOpen, comment, comments, onChange, onSubmit,
+  commentBoxOpen, comment, comments, profileUrl, onChange, onSubmit,
 }) {
   if (!commentBoxOpen) {
     return <></>;
@@ -33,6 +33,7 @@ export default function CommentBox({
       <CommentForm
         commentBoxOpen={commentBoxOpen}
         comment={comment}
+        profileUrl={profileUrl}
         onChange={onChange}
         onSubmit={onSubmit}
       />
