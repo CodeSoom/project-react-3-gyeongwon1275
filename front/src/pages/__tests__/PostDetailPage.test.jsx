@@ -8,6 +8,8 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initialState } from '../../data/postReducer';
 
+import { mockNonMember, mockUser } from '../../feature/mockData';
+
 import PostDetailPage from '../PostDetailPage';
 
 describe('PostDetailPage', () => {
@@ -16,6 +18,10 @@ describe('PostDetailPage', () => {
     useDispatch.mockImplementation(() => dispatch);
     useSelector.mockImplementation((selector) => selector({
       post: initialState,
+      user: {
+        user: mockUser,
+        nonMember: mockNonMember,
+      },
     }));
   });
 

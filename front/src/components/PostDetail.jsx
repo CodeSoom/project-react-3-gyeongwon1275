@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Card,
   Avatar,
-  Comment,
+  Comment as PostCard,
 } from 'antd';
 import {
   LikeOutlined,
@@ -43,13 +43,24 @@ const PostDetailImage = styled.img({
 });
 
 export default function PostDetail({
-  post, commentBoxOpen, onClickCommentIcon, comment, comments, onChange, onSubmit,
+  post,
+  commentBoxOpen,
+  user,
+  nonMember,
+  comment,
+  comments,
+  onClickCommentIcon,
+  onChange,
+  onSubmit,
+
 }) {
   const {
-    content, created_at: createdTime, images, user,
+    content, created_at: createdTime, images, user: postAuthor, nonMember: postNonMember,
   } = post;
 
-  const { name, profileUrl } = user || { name: '아무개', profileUrl: '' };
+  const { name, profileUrl: postProfileUrl } = postAuthor || postNonMember || { name: '', profileUrl: '' };
+
+  const { profileUrl } = user || nonMember;
 
   return (
     <PostWrapper>
@@ -60,11 +71,12 @@ export default function PostDetail({
           <CommentOutlined role="button" onClick={onClickCommentIcon} />,
         ]}
       >
-        <Comment
+        <PostCard
           avatar={(
             <Avatar
               shape="square"
-              src={profileUrl}
+              src={postProfileUrl}
+              alt="post-author-profile"
             />
           )}
           author={name}
@@ -81,6 +93,7 @@ export default function PostDetail({
         commentBoxOpen={commentBoxOpen}
         comment={comment}
         comments={comments}
+        profileUrl={profileUrl}
         onChange={onChange}
         onSubmit={onSubmit}
       />

@@ -8,7 +8,9 @@ import given from 'given2';
 
 import PostDetailContainer from '../PostDetailContainer';
 
-import { mockComment, mockPost } from '../../feature/mockData';
+import {
+  mockComment, mockNonMember, mockPost, mockUser,
+} from '../../feature/mockData';
 
 import { setMatchMediaMock } from '../../../__mocks__/matchMedia';
 
@@ -27,6 +29,10 @@ describe('PostDetailContainer', () => {
         commentBoxOpen: given.commentBoxOpen,
         comment: given.comment,
         comments: [mockComment],
+      },
+      user: {
+        user: mockUser,
+        nonMember: mockNonMember,
       },
     }));
 
@@ -87,6 +93,10 @@ describe('PostDetailContainer', () => {
 
       expect(screen.getByText('글을 게시하려면 Enter 키를 누르세요.')).toBeInTheDocument();
       expect(screen.getByText(mockComment.content)).toBeInTheDocument();
+
+      const commentFormProfile = screen.getByRole('img', { name: 'comment-form-profile' });
+
+      expect(commentFormProfile).toHaveAttribute('src', mockUser.profileUrl);
     });
 
     it('changes comment', () => {

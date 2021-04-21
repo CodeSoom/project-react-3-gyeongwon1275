@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { render, screen } from '@testing-library/react';
+import {
+  render, screen,
+} from '@testing-library/react';
 
 import { setMatchMediaMock } from '../../../__mocks__/matchMedia';
 
 import CommentBox from '../CommentBox';
 
-import { mockComment } from '../../feature/mockData';
+import { mockComment, mockUser } from '../../feature/mockData';
 
 describe('CommentBox', () => {
   const onChange = jest.fn();
@@ -24,6 +26,7 @@ describe('CommentBox', () => {
       render(<CommentBox
         commentBoxOpen
         comment="댓글"
+        profileUrl={mockUser.profileUrl}
         comments={[mockComment]}
         onChange={onChange}
         onSubmit={onSubmit}
@@ -33,6 +36,11 @@ describe('CommentBox', () => {
 
       const input = screen.getByLabelText('comment-input');
       expect(input.value).toBe('댓글');
+
+      const commentFormProfileImage = screen.getByRole('img', { name: 'comment-form-profile' });
+
+      expect(commentFormProfileImage).toBeInTheDocument();
+      expect(commentFormProfileImage).toHaveAttribute('src', mockUser.profileUrl);
     });
   });
 
@@ -41,6 +49,7 @@ describe('CommentBox', () => {
       render(<CommentBox
         commentBoxOpen={false}
         comment="댓글"
+        profileUrl={mockUser.profileUrl}
         comments={[mockComment]}
         onChange={onChange}
         onSubmit={onSubmit}
