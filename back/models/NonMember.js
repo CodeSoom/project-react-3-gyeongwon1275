@@ -1,10 +1,15 @@
 const { DataTypes, Model } = require('sequelize');
 
-module.exports = class Comment extends Model {
+module.exports = class NonMember extends Model {
   static init(sequelize) {
     return super.init(
       {
-        content: {
+        name: {
+          type: DataTypes.STRING(40),
+          allowNull: false,
+          unique: false,
+        },
+        profileUrl: {
           type: DataTypes.TEXT,
           allowNull: false,
           unique: false,
@@ -18,8 +23,8 @@ module.exports = class Comment extends Model {
       {
         underscored: false,
         timestamps: false,
-        modelName: 'comment',
-        tableName: 'comments',
+        modelName: 'nonMember',
+        tableName: 'nonMembers',
         charset: 'utf8',
         collate: 'utf8_general_ci',
         sequelize,
@@ -28,8 +33,7 @@ module.exports = class Comment extends Model {
   }
 
   static associate(db) {
-    db.Comment.belongsTo(db.User);
-    db.Comment.belongsTo(db.NonMember);
-    db.Comment.belongsTo(db.Post);
+    db.User.hasMany(db.Comment);
+    db.User.hasMany(db.Post);
   }
 };

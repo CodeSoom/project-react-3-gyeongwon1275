@@ -29,6 +29,7 @@ module.exports = class Comment extends Model {
 
   static associate(db) {
     db.Comment.belongsTo(db.User);
+    db.Comment.belongsTo(db.NonMember);
     db.Comment.belongsTo(db.Post);
   }
 };

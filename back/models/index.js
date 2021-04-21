@@ -4,6 +4,7 @@ const User = require('./User');
 const Post = require('./Post');
 const Comment = require('./Comment');
 const Image = require('./Image');
+const NonMember = require('./NonMember')
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -20,6 +21,7 @@ db.User = User;
 db.Post = Post;
 db.Comment = Comment;
 db.Image = Image;
+db.NonMember = NonMember;
 
 Object.values(db).forEach((model) => {
   model.init(sequelize);
