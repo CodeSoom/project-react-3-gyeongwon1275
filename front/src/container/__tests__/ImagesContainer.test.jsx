@@ -50,6 +50,13 @@ describe('ImagesContainer', () => {
     ));
   }
 
+  it('get nonMember profile ', () => {
+    given('images', () => []);
+    renderImageContainer();
+
+    expect(dispatch).toHaveBeenCalledTimes(2);
+  });
+
   context('without images', () => {
     it('renders text "loading..."', () => {
       given('images', () => []);
@@ -99,7 +106,7 @@ describe('ImagesContainer', () => {
 
       fireEvent.click(button);
 
-      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenCalledTimes(4);
       expect(dispatch).toHaveBeenCalledWith(setViewMoreButtonVisible(false));
     });
   });
