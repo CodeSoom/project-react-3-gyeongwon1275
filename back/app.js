@@ -11,6 +11,7 @@ const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const imagesRouter = require('./routes/images');
 const userRouter = require('./routes/user')
+const nonMemberRouter = require('./routes/nonMember')
 
 const passportConfig = require('./passport');
 
@@ -45,6 +46,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+
+app.use('/non-member', nonMemberRouter);
 
 app.use('/post', postRouter);
 
