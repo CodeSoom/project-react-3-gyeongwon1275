@@ -49,8 +49,13 @@ describe('api', () => {
     });
 
     it('returns "ok" when request success', async () => {
-      const { data } = await sendPost({ text: 'dog', url: 'http://dog.com/dog1.gif', userId: 3 });
+      const dataToSend = {
+        text: 'dog', url: 'http://dog.com/dog1.gif', userId: 3, nonMemberId: null,
+      };
 
+      const { data } = await sendPost(dataToSend);
+
+      expect(http.post).toHaveBeenCalledWith('/post', dataToSend);
       expect(data).toBe('ok');
     });
   });
@@ -85,8 +90,13 @@ describe('api', () => {
     });
 
     it('returns "ok" when request success', async () => {
-      const { data } = await sendComment({ postId: 1, comment: '댓글입니다.', userId: 3 });
+      const dataToSend = {
+        comment: '댓글입니다.', userId: 3, nonMemberId: null,
+      };
 
+      const { data } = await sendComment({ postId: 1, ...dataToSend });
+
+      expect(http.post).toHaveBeenCalledWith(`/post/${1}/comment`, dataToSend);
       expect(data).toBe('ok');
     });
   });

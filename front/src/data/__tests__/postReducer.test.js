@@ -36,7 +36,11 @@ import {
 
 import { dataURLtoFile } from '../../utils/index';
 import {
-  mockComment, mockImages, mockPost, mockUser,
+  mockComment,
+  mockImages,
+  mockNonMember,
+  mockPost,
+  mockUser,
 } from '../../feature/mockData';
 
 jest.mock('../../services/api');
@@ -235,14 +239,20 @@ describe('postReducer', () => {
             post: initialState,
             user: {
               user: mockUser,
+              nonMember: null,
             },
           });
         });
 
-        it('calls sendPost with text,url,userId', async () => {
+        it('calls sendPost with text,url,userId (nonMemberId=null)', async () => {
           await store.dispatch(writePost());
 
-          expect(sendPost).toHaveBeenCalledWith({ text: '개입니다', url: 'image-url', userId: 3 });
+          expect(sendPost).toHaveBeenCalledWith({
+            text: '개입니다',
+            url: 'image-url',
+            userId: 3,
+            nonMemberId: null,
+          });
         });
       });
 
@@ -259,14 +269,20 @@ describe('postReducer', () => {
             post: initialState,
             user: {
               user: null,
+              nonMember: mockNonMember,
             },
           });
         });
 
-        it('calls sendPost with text,url,(userId=null)', async () => {
+        it('calls sendPost with text,url,(userId=null), nonMemberId', async () => {
           await store.dispatch(writePost());
 
-          expect(sendPost).toHaveBeenCalledWith({ text: '개입니다', url: 'image-url', userId: null });
+          expect(sendPost).toHaveBeenCalledWith({
+            text: '개입니다',
+            url: 'image-url',
+            userId: null,
+            nonMemberId: mockNonMember.id,
+          });
         });
       });
 
@@ -283,6 +299,7 @@ describe('postReducer', () => {
             post: initialState,
             user: {
               user: mockUser,
+              nonMember: mockNonMember,
             },
           });
         });
@@ -523,6 +540,7 @@ describe('postReducer', () => {
             },
             user: {
               user: null,
+              nonMember: mockNonMember,
             },
           });
         });
@@ -550,6 +568,7 @@ describe('postReducer', () => {
             },
             user: {
               user: mockUser,
+              nonMember: null,
             },
           });
         });
@@ -557,7 +576,9 @@ describe('postReducer', () => {
         it('calls sendComment with postId,comment,userId', async () => {
           await store.dispatch(writeComment(1));
 
-          expect(sendComment).toHaveBeenCalledWith({ comment: '댓글!', postId: 1, userId: 3 });
+          expect(sendComment).toHaveBeenCalledWith({
+            comment: '댓글!', postId: 1, userId: 3, nonMemberId: null,
+          });
         });
       });
 
@@ -575,6 +596,7 @@ describe('postReducer', () => {
             },
             user: {
               user: null,
+              nonMember: mockNonMember,
             },
           });
         });
@@ -582,7 +604,9 @@ describe('postReducer', () => {
         it('calls sendComment with postId,comment,(userId = null)', async () => {
           await store.dispatch(writeComment(1));
 
-          expect(sendComment).toHaveBeenCalledWith({ comment: '댓글!', postId: 1, userId: null });
+          expect(sendComment).toHaveBeenCalledWith({
+            comment: '댓글!', postId: 1, userId: null, nonMemberId: mockNonMember.id,
+          });
         });
       });
 
@@ -601,6 +625,7 @@ describe('postReducer', () => {
             },
             user: {
               user: null,
+              nonMember: mockNonMember,
             },
           });
         });

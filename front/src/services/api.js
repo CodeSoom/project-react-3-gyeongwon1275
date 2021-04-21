@@ -9,7 +9,11 @@ export const postImage = async (image) => {
   return data;
 };
 
-export const sendPost = ({ text, url, userId }) => http.post('/post', { text, url, userId });
+export const sendPost = ({
+  text, url, userId, nonMemberId,
+}) => http.post('/post', {
+  text, url, userId, nonMemberId,
+});
 
 export const getImages = async (lastId = 0) => {
   const { data } = await http.get(`/images?lastId=${lastId}`);
@@ -21,7 +25,9 @@ export const getPost = async (postId) => {
   return data;
 };
 
-export const sendComment = ({ postId, comment, userId }) => http.post(`/post/${postId}/comment`, { comment, userId });
+export const sendComment = ({
+  postId, comment, userId, nonMemberId,
+}) => http.post(`/post/${postId}/comment`, { comment, userId, nonMemberId });
 
 export const getComments = async (postId) => {
   const { data } = await http.get(`/post/${postId}/comments`);
