@@ -6,7 +6,13 @@ import styled from '@emotion/styled';
 
 import { useHistory } from 'react-router-dom';
 
-import { loadImages, loadImagesMore, setViewMoreButtonVisible } from '../data/postReducer';
+import {
+  loadImages,
+  loadImagesMore,
+  setViewMoreButtonVisible,
+} from '../data/postReducer';
+
+import { loadNonMember } from '../data/userReducer';
 
 import Image from '../components/Image';
 import ViewMoreButton from '../components/ViewMoreButton';
@@ -40,6 +46,7 @@ export default function ImagesContainer() {
   const history = useHistory();
 
   useEffect(() => {
+    dispatch(loadNonMember());
     dispatch(loadImages());
 
     const onScroll = () => {
