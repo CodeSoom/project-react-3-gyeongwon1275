@@ -137,10 +137,14 @@ export const writePost = () => async (dispatch, getState) => {
 
   const userId = user.user ? user.user.id : null;
 
+  const nonMemberId = user.nonMember ? user.nonMember.id : null;
+
   try {
     const { url } = await postImage(image);
 
-    await sendPost({ text, url, userId });
+    await sendPost({
+      text, url, userId, nonMemberId,
+    });
 
     dispatch(loadImages());
   } catch (error) {
@@ -173,8 +177,12 @@ export const writeComment = (postId) => async (dispatch, getState) => {
 
   const userId = user.user ? user.user.id : null;
 
+  const nonMemberId = user.nonMember ? user.nonMember.id : null;
+
   try {
-    await sendComment({ postId, comment, userId });
+    await sendComment({
+      postId, comment, userId, nonMemberId,
+    });
     await dispatch(loadComments(postId));
     dispatch(setComment(''));
   } catch (error) {
